@@ -265,14 +265,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Helvetica Neue'
 <nav class="nav-bar">
   <div class="nav-logo">ETC单片<br/><small>MVP v1.7</small></div>
   <button class="nav-tab active" onclick="goPage('page-intro',this)">📘 需求说明</button>
+  <button class="nav-tab" onclick="goPage('page-ops-touch',this)">🎯 运营触达图示</button>
   <div class="nav-sep"></div>
-  <span style="font-size:11px;font-weight:700;color:#fa8c16;background:#fff7e6;padding:2px 8px;border-radius:4px;white-space:nowrap;margin-right:4px;">需求2·以旧换新</span>
+  <span style="font-size:11px;font-weight:700;color:#fa8c16;background:#fff7e6;padding:2px 8px;border-radius:4px;white-space:nowrap;margin-right:4px;">需求1·以旧换新</span>
   <button class="nav-tab" onclick="goPage('page-tradein-home',this)">07 设备升级</button>
   <button class="nav-tab" onclick="goPage('page-tradein-scanning',this)">07c 估价中</button>
   <button class="nav-tab" onclick="goPage('page-valuation',this)">08 评估结果</button>
   <button class="nav-tab" onclick="goPage('page-tradein-done',this)">11 订单详情</button>
   <div class="nav-sep"></div>
-  <span style="font-size:11px;font-weight:700;color:#0066cc;background:#e6f0fb;padding:2px 8px;border-radius:4px;white-space:nowrap;margin-right:4px;">需求1·搜索→购买</span>
+  <span style="font-size:11px;font-weight:700;color:#0066cc;background:#e6f0fb;padding:2px 8px;border-radius:4px;white-space:nowrap;margin-right:4px;">需求2·搜索→购买</span>
   <button class="nav-tab" onclick="goPage('page-search',this)">01 微信搜索</button>
   <button class="nav-tab" onclick="goPage('page-home',this)">02 办理首页</button>
   <button class="nav-tab" onclick="goPage('page-sku',this)">03 选择设备</button>
@@ -291,8 +292,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Helvetica Neue'
   <div class="nav-sep"></div>
   <span style="font-size:11px;font-weight:700;color:#531dab;background:#f9f0ff;padding:2px 8px;border-radius:4px;white-space:nowrap;margin-right:4px;">运营后台</span>
   <button class="nav-tab" onclick="goPage('page-ops-admin',this)">后台·订单管理</button>
-  <div class="nav-sep"></div>
-  <button class="nav-tab" onclick="goPage('page-ops-touch',this)">🎯 运营触达图示</button>
 </nav>
 
 <!-- ═══════════════════════════════════════
@@ -410,7 +409,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Helvetica Neue'
           <!-- 途径行 -->
           <div style="display:grid;grid-template-columns:80px repeat(5,1fr);border-bottom:1px solid #f0f0f0;">
             <div style="padding:10px 8px;font-size:11px;font-weight:800;color:#555;background:#fafafa;display:flex;align-items:center;border-right:1px solid #f0f0f0;">途径</div>
-            <div style="padding:10px 8px;font-size:10px;color:#555;line-height:1.7;background:#f0f5ff;">微信搜索广告<br/>微信朋友圈广告<br/>…</div>
+            <div style="padding:10px 8px;font-size:10px;color:#555;line-height:1.7;background:#f0f5ff;">微信搜索广告<br/>微信朋友圈广告<br/><span style="color:#888;font-weight:700;">站内：</span>小程序内 banner<br/>小程序内弹窗</div>
             <div style="padding:10px 8px;font-size:10px;color:#555;line-height:1.7;background:#fffbe6;border-left:1px solid #f0f0f0;" colspan="2">
               <span style="color:#888;font-weight:700;">站外：</span>短信、公众号消息、小程序订阅消息<br/>
               <span style="color:#888;font-weight:700;">站内：</span>banner、弹窗、跑马灯
@@ -433,7 +432,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Helvetica Neue'
           <div style="display:grid;grid-template-columns:80px repeat(5,1fr);">
             <div style="padding:10px 8px;font-size:11px;font-weight:800;color:#555;background:#fafafa;display:flex;align-items:center;border-right:1px solid #f0f0f0;">核心指标</div>
             <div style="padding:10px 8px;background:#f0f5ff;font-size:10px;color:#0958d9;line-height:1.8;">
-              订单支付率<br/>设备激活率
+              订单支付率
             </div>
             <div style="padding:10px 8px;background:#fffbe6;font-size:10px;color:#873800;line-height:1.8;border-left:1px solid #f0f0f0;">
               延保：<br/>订单支付率<br/>延保渗透率
@@ -480,7 +479,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Helvetica Neue'
               </tr>
               <tr style="background:#f6ffed;">
                 <td><strong>本方案</strong></td>
-                <td style="font-size:11px;">设备升级首页 → 自动读取车牌估价 → 评估结果（先展示原价/抵扣/实付）→ 确认地址 → 直接支付</td>
+                <td style="font-size:11px;">设备升级首页 → 旧设备估价 → 选择新设备 → 确认地址 → 直接支付</td>
                 <td style="font-size:11px;color:#888;">已移除：支付成功页、确认订单页、手动添加车牌</td>
                 <td>—</td>
               </tr>
