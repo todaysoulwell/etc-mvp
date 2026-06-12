@@ -5685,204 +5685,6 @@ function confirmCancel() {
 </style>
 
 <div class="ot-wrap">
-
-<!-- ══════════ 新购 ══════════ -->
-<!-- ─── 服务状态提醒 ─── -->
-<div class="ot-h1" style="border-color:#16a34a;">📬 服务状态提醒 · 渠道文案规范</div>
-
-<!-- 消息样式说明 -->
-<div style="background:#f0fdf4;border:1px solid #b7eb8f;border-radius:8px;padding:12px 16px;font-size:12px;color:#135200;line-height:1.8;margin-bottom:20px;">
-  <b>三条渠道文案格式各不相同：</b><br/>
-  · <b>小程序订阅消息</b>：模版字段形式（当前状态 / 车牌号 / 提醒时间 / 说明），点击跳转小程序对应页<br/>
-  · <b>公众号服务通知</b>：模版消息形式（同订阅消息字段结构），通过微信公众号推送<br/>
-  · <b>短信</b>：纯文本，格式为【品牌名】正文内容，附短链，末尾「退订回T」；需提前报备运营商
-</div>
-
-<table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:20px;">
-  <thead>
-    <tr style="background:#16a34a;color:#fff;">
-      <th style="padding:9px 12px;text-align:left;border-radius:8px 0 0 0;width:100px;">触发场景</th>
-      <th style="padding:9px 12px;text-align:left;width:80px;">渠道</th>
-      <th style="padding:9px 12px;text-align:left;">文案内容</th>
-      <th style="padding:9px 12px;text-align:left;width:160px;">发送时机</th>
-      <th style="padding:9px 12px;text-align:left;border-radius:0 8px 0 0;width:80px;">是否发短信</th>
-    </tr>
-  </thead>
-  <tbody>
-
-    <!-- 待付款 -->
-    <tr style="border-bottom:1px solid #f0f0f0;">
-      <td rowspan="3" style="padding:10px 12px;font-weight:700;color:#d46b08;background:#fff7e6;border-right:2px solid #ffd591;">待付款</td>
-      <td style="padding:8px 12px;color:#576b95;font-weight:600;">订阅消息<br/>公众号</td>
-      <td style="padding:8px 12px;font-size:11px;background:#f9f9f9;">
-        <div style="color:#64748d;margin-bottom:4px;">标题：ETC 服务状态提醒</div>
-        当前状态：<b>订单未完成支付</b><br/>
-        车牌号：苏 E8F231<br/>
-        提醒时间：2026-06-11 10:30<br/>
-        说明：您有一笔订单未完成支付，点击继续支付
-      </td>
-      <td style="padding:8px 12px;color:#64748d;font-size:11px;">下单后 <b>30 分钟</b>未支付触发</td>
-      <td rowspan="3" style="padding:10px 12px;text-align:center;background:#fff7e6;">
-        <span style="background:#fff7e6;color:#d46b08;border:1px solid #ffd591;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700;">✅ 发</span>
-        <div style="font-size:10px;color:#64748d;margin-top:4px;">剩余5分钟<br/>时补发</div>
-      </td>
-    </tr>
-    <tr style="border-bottom:1px solid #eee;">
-      <td style="padding:8px 12px;color:#e67e22;font-weight:600;">短信</td>
-      <td style="padding:8px 12px;font-size:11px;background:#fff7e6;border-left:3px solid #ffd591;">
-        【小万出行】您有一笔ETC订单即将超时取消（剩余5分钟），点击立即支付：xw.cn/order/xxx 退订回T
-      </td>
-      <td style="padding:8px 12px;color:#64748d;font-size:11px;">剩余 <b>5 分钟</b>时触发</td>
-    </tr>
-    <tr style="border-bottom:2px solid #e3e8ee;"><td colspan="3" style="padding:4px 12px;font-size:10px;color:#aaa;">↑ 微信消息提前告知，短信作为订单超时前最后提醒</td></tr>
-
-    <!-- 待提交资料 -->
-    <tr style="border-bottom:1px solid #f0f0f0;background:#fafafa;">
-      <td rowspan="2" style="padding:10px 12px;font-weight:700;color:#fa8c16;background:#fffbe6;border-right:2px solid #ffe58f;">待提交资料<br/><small style="font-weight:400;color:#64748d;">支付后24h</small></td>
-      <td style="padding:8px 12px;color:#576b95;font-weight:600;">订阅消息<br/>公众号</td>
-      <td style="padding:8px 12px;font-size:11px;background:#fafafa;">
-        <div style="color:#64748d;margin-bottom:4px;">标题：ETC 服务状态提醒</div>
-        当前状态：<b>待提交资料</b><br/>
-        车牌号：苏 E8F231<br/>
-        提醒时间：2026-06-12 14:00<br/>
-        说明：支付成功，请尽快提交资料
-      </td>
-      <td style="padding:8px 12px;color:#64748d;font-size:11px;">支付成功后 <b>24 小时</b>未提交</td>
-      <td rowspan="2" style="padding:10px 12px;text-align:center;background:#fafafa;">
-        <span style="background:#f6f9fc;color:#aaa;border:1px solid #e0e0e0;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700;">— 不发</span>
-        <div style="font-size:10px;color:#aaa;margin-top:4px;">无紧急<br/>节点</div>
-      </td>
-    </tr>
-    <tr style="border-bottom:2px solid #e3e8ee;background:#fafafa;"><td colspan="3" style="padding:4px 12px;font-size:10px;color:#aaa;">↑ 短信不发；若发货时仍未提交，由「发货后」场景处理</td></tr>
-
-    <!-- 发货后未提交资料 -->
-    <tr style="border-bottom:1px solid #f0f0f0;">
-      <td rowspan="3" style="padding:10px 12px;font-weight:700;color:#fa8c16;background:#fff7e6;border-right:2px solid #ffd591;">发货后<br/>未提交资料</td>
-      <td style="padding:8px 12px;color:#576b95;font-weight:600;">订阅消息<br/>公众号</td>
-      <td style="padding:8px 12px;font-size:11px;background:#f9f9f9;">
-        <div style="color:#64748d;margin-bottom:4px;">标题：ETC 服务状态提醒</div>
-        当前状态：<b>待提交资料</b><br/>
-        车牌号：苏 E8F231<br/>
-        提醒时间：2026-06-13 09:00<br/>
-        说明：设备已发出，请提前完成资料提交
-      </td>
-      <td style="padding:8px 12px;color:#64748d;font-size:11px;">发货时仍未提交，<b>立即</b>触发</td>
-      <td rowspan="3" style="padding:10px 12px;text-align:center;background:#fff7e6;">
-        <span style="background:#fff7e6;color:#d46b08;border:1px solid #ffd591;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700;">✅ 发</span>
-        <div style="font-size:10px;color:#64748d;margin-top:4px;">迟交资料<br/>无法激活</div>
-      </td>
-    </tr>
-    <tr style="border-bottom:1px solid #eee;">
-      <td style="padding:8px 12px;color:#e67e22;font-weight:600;">短信</td>
-      <td style="padding:8px 12px;font-size:11px;background:#fff7e6;border-left:3px solid #ffd591;">
-        【小万出行】您的ETC设备已发出，请尽快提交资料：xw.cn/docs/xxx 退订回T
-      </td>
-      <td style="padding:8px 12px;color:#64748d;font-size:11px;">与微信消息同步发出</td>
-    </tr>
-    <tr style="border-bottom:2px solid #e3e8ee;"><td colspan="3" style="padding:4px 12px;font-size:10px;color:#aaa;">↑ 此场景覆盖「支付后24h未提交」，发货触发优先级更高</td></tr>
-
-    <!-- 资料审核驳回 -->
-    <tr style="border-bottom:1px solid #f0f0f0;background:#fafafa;">
-      <td rowspan="3" style="padding:10px 12px;font-weight:700;color:#cf1322;background:#fff1f0;border-right:2px solid #ffa39e;">资料审核驳回</td>
-      <td style="padding:8px 12px;color:#576b95;font-weight:600;">订阅消息<br/>公众号</td>
-      <td style="padding:8px 12px;font-size:11px;background:#fafafa;">
-        <div style="color:#64748d;margin-bottom:4px;">标题：ETC 服务状态提醒</div>
-        当前状态：<b style="color:#cf1322;">资料审核未通过</b><br/>
-        车牌号：苏 E8F231<br/>
-        提醒时间：2026-06-13 14:22<br/>
-        说明：您的资料审核未通过，请查看原因并重新提交
-      </td>
-      <td style="padding:8px 12px;color:#64748d;font-size:11px;">审核驳回后<b>立即</b>触发</td>
-      <td rowspan="3" style="padding:10px 12px;text-align:center;background:#fff1f0;">
-        <span style="background:#fff1f0;color:#cf1322;border:1px solid #ffa39e;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700;">✅ 发</span>
-        <div style="font-size:10px;color:#64748d;margin-top:4px;">履约链路<br/>阻断</div>
-      </td>
-    </tr>
-    <tr style="border-bottom:1px solid #eee;background:#fafafa;">
-      <td style="padding:8px 12px;color:#e67e22;font-weight:600;">短信</td>
-      <td style="padding:8px 12px;font-size:11px;background:#fff1f0;border-left:3px solid #ffa39e;">
-        【小万出行】您的ETC资料审核未通过，请查看驳回原因并重新提交：xw.cn/docs/xxx 退订回T
-      </td>
-      <td style="padding:8px 12px;color:#64748d;font-size:11px;">与微信消息同步发出</td>
-    </tr>
-    <tr style="border-bottom:2px solid #e3e8ee;background:#fafafa;"><td colspan="3" style="padding:4px 12px;font-size:10px;color:#aaa;">↑ 驳回必须主动重提，影响签约和发货，需双渠道确保用户看到</td></tr>
-
-    <!-- 资料审核通过 -->
-    <tr style="border-bottom:1px solid #f0f0f0;">
-      <td rowspan="2" style="padding:10px 12px;font-weight:700;color:#16a34a;border-right:2px solid #b7eb8f;">资料审核通过</td>
-      <td style="padding:8px 12px;color:#576b95;font-weight:600;">订阅消息<br/>公众号</td>
-      <td style="padding:8px 12px;font-size:11px;background:#f9f9f9;">
-        <div style="color:#64748d;margin-bottom:4px;">标题：ETC 服务状态提醒</div>
-        当前状态：<b style="color:#16a34a;">资料审核通过</b><br/>
-        车牌号：苏 E8F231<br/>
-        提醒时间：2026-06-13 16:00<br/>
-        说明：资料审核通过
-      </td>
-      <td style="padding:8px 12px;color:#64748d;font-size:11px;">审核通过后<b>立即</b>触发</td>
-      <td rowspan="2" style="padding:10px 12px;text-align:center;">
-        <span style="background:#f6f9fc;color:#aaa;border:1px solid #e0e0e0;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700;">— 不发</span>
-        <div style="font-size:10px;color:#aaa;margin-top:4px;">正向进展<br/>不紧急</div>
-      </td>
-    </tr>
-    <tr style="border-bottom:2px solid #e3e8ee;"><td colspan="3" style="padding:4px 12px;font-size:10px;color:#aaa;">↑ 正向消息，微信通知即可</td></tr>
-
-    <!-- 待激活·签收立即 -->
-    <tr style="border-bottom:1px solid #f0f0f0;background:#fafafa;">
-      <td rowspan="2" style="padding:10px 12px;font-weight:700;color:#237804;background:#f0fdf4;border-right:2px solid #b7eb8f;">待激活<br/><small style="font-weight:400;color:#64748d;">签收后立即</small></td>
-      <td style="padding:8px 12px;color:#576b95;font-weight:600;">订阅消息<br/>公众号</td>
-      <td style="padding:8px 12px;font-size:11px;background:#fafafa;">
-        <div style="color:#64748d;margin-bottom:4px;">标题：ETC 服务状态提醒</div>
-        当前状态：<b>设备已到货</b><br/>
-        车牌号：苏 E8F231<br/>
-        提醒时间：2026-06-15 11:00<br/>
-        说明：您的ETC设备已签收，立即激活即可使用<br/>
-        <span style="color:#d46b08;font-size:10px;">（以旧换新）新设备已到货，激活后旧设备将自动注销，请确认后操作</span>
-      </td>
-      <td style="padding:8px 12px;color:#64748d;font-size:11px;">物流签收后<b>立即</b>触发</td>
-      <td rowspan="2" style="padding:10px 12px;text-align:center;background:#f0fdf4;">
-        <span style="background:#f6f9fc;color:#aaa;border:1px solid #e0e0e0;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700;">— 不发</span>
-        <div style="font-size:10px;color:#aaa;margin-top:4px;">刚到货<br/>给缓冲</div>
-      </td>
-    </tr>
-    <tr style="border-bottom:2px solid #e3e8ee;background:#fafafa;"><td colspan="3" style="padding:4px 12px;font-size:10px;color:#aaa;">↑ 设备刚到，用户需要安装时间，不立即催促</td></tr>
-
-    <!-- 待激活·48h未激活 -->
-    <tr style="border-bottom:1px solid #f0f0f0;">
-      <td rowspan="3" style="padding:10px 12px;font-weight:700;color:#237804;background:#f0fdf4;border-right:2px solid #b7eb8f;">待激活<br/><small style="font-weight:400;color:#64748d;">48h未激活</small></td>
-      <td style="padding:8px 12px;color:#576b95;font-weight:600;">订阅消息<br/>公众号</td>
-      <td style="padding:8px 12px;font-size:11px;background:#f9f9f9;">
-        <div style="color:#64748d;margin-bottom:4px;">标题：ETC 服务状态提醒</div>
-        当前状态：<b>设备已到货</b><br/>
-        车牌号：苏 E8F231<br/>
-        提醒时间：2026-06-17 11:00<br/>
-        说明：您的ETC设备已签收，立即激活即可使用
-      </td>
-      <td style="padding:8px 12px;color:#64748d;font-size:11px;">签收后 <b>48 小时</b>未激活</td>
-      <td rowspan="3" style="padding:10px 12px;text-align:center;background:#f0fdf4;">
-        <span style="background:#f0fdf4;color:#237804;border:1px solid #b7eb8f;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700;">✅ 发</span>
-        <div style="font-size:10px;color:#64748d;margin-top:4px;">可能遗忘<br/>或遇问题</div>
-      </td>
-    </tr>
-    <tr style="border-bottom:1px solid #eee;">
-      <td style="padding:8px 12px;color:#e67e22;font-weight:600;">短信</td>
-      <td style="padding:8px 12px;font-size:11px;background:#f0fdf4;border-left:3px solid #b7eb8f;">
-        【小万出行】您的ETC设备已到货2天，尚未激活。激活后即可享高速95折，点击激活：xw.cn/activate/xxx 退订回T
-      </td>
-      <td style="padding:8px 12px;color:#64748d;font-size:11px;">与微信消息同步发出</td>
-    </tr>
-    <tr style="border-bottom:2px solid #e3e8ee;"><td colspan="3" style="padding:4px 12px;font-size:10px;color:#aaa;">↑ 以旧换新版本短信额外说明：激活后旧设备将自动注销</td></tr>
-
-  </tbody>
-</table>
-
-<div style="background:#fffbe6;border:1px solid #ffe58f;border-radius:8px;padding:12px 16px;font-size:11px;color:#614700;line-height:1.9;margin-bottom:28px;">
-  <b>⚠ 待确认：</b><br/>
-  · 「发货后未提交资料」与「支付后24h」重叠时，建议以发货触发覆盖上一条，避免重复发微信消息<br/>
-  · 短信模版内容需运营商报备，「退订回T」为必填项<br/>
-  · 用户关闭订阅消息权限后，微信消息失效，短信作为唯一兜底，是否需要更早触发（如待付款改为15分钟触发短信）？
-</div>
-
-
 <style>
 .ot-preview-box{background:#f8fafc;border:1.5px dashed #c7d2fe;border-radius:12px;padding:14px;margin:-4px 0 28px;}
 .ot-preview-title{font-size:11px;font-weight:700;color:#64748d;margin-bottom:12px;letter-spacing:.3px;}
@@ -6595,6 +6397,204 @@ function confirmCancel() {
 </div>
 
 </div>
+
+<!-- ══════════ 新购 ══════════ -->
+<!-- ─── 服务状态提醒 ─── -->
+<div class="ot-h1" style="border-color:#16a34a;">📬 服务状态提醒 · 渠道文案规范</div>
+
+<!-- 消息样式说明 -->
+<div style="background:#f0fdf4;border:1px solid #b7eb8f;border-radius:8px;padding:12px 16px;font-size:12px;color:#135200;line-height:1.8;margin-bottom:20px;">
+  <b>三条渠道文案格式各不相同：</b><br/>
+  · <b>小程序订阅消息</b>：模版字段形式（当前状态 / 车牌号 / 提醒时间 / 说明），点击跳转小程序对应页<br/>
+  · <b>公众号服务通知</b>：模版消息形式（同订阅消息字段结构），通过微信公众号推送<br/>
+  · <b>短信</b>：纯文本，格式为【品牌名】正文内容，附短链，末尾「退订回T」；需提前报备运营商
+</div>
+
+<table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:20px;">
+  <thead>
+    <tr style="background:#16a34a;color:#fff;">
+      <th style="padding:9px 12px;text-align:left;border-radius:8px 0 0 0;width:100px;">触发场景</th>
+      <th style="padding:9px 12px;text-align:left;width:80px;">渠道</th>
+      <th style="padding:9px 12px;text-align:left;">文案内容</th>
+      <th style="padding:9px 12px;text-align:left;width:160px;">发送时机</th>
+      <th style="padding:9px 12px;text-align:left;border-radius:0 8px 0 0;width:80px;">是否发短信</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <!-- 待付款 -->
+    <tr style="border-bottom:1px solid #f0f0f0;">
+      <td rowspan="3" style="padding:10px 12px;font-weight:700;color:#d46b08;background:#fff7e6;border-right:2px solid #ffd591;">待付款</td>
+      <td style="padding:8px 12px;color:#576b95;font-weight:600;">订阅消息<br/>公众号</td>
+      <td style="padding:8px 12px;font-size:11px;background:#f9f9f9;">
+        <div style="color:#64748d;margin-bottom:4px;">标题：ETC 服务状态提醒</div>
+        当前状态：<b>订单未完成支付</b><br/>
+        车牌号：苏 E8F231<br/>
+        提醒时间：2026-06-11 10:30<br/>
+        说明：您有一笔订单未完成支付，点击继续支付
+      </td>
+      <td style="padding:8px 12px;color:#64748d;font-size:11px;">下单后 <b>30 分钟</b>未支付触发</td>
+      <td rowspan="3" style="padding:10px 12px;text-align:center;background:#fff7e6;">
+        <span style="background:#fff7e6;color:#d46b08;border:1px solid #ffd591;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700;">✅ 发</span>
+        <div style="font-size:10px;color:#64748d;margin-top:4px;">剩余5分钟<br/>时补发</div>
+      </td>
+    </tr>
+    <tr style="border-bottom:1px solid #eee;">
+      <td style="padding:8px 12px;color:#e67e22;font-weight:600;">短信</td>
+      <td style="padding:8px 12px;font-size:11px;background:#fff7e6;border-left:3px solid #ffd591;">
+        【小万出行】您有一笔ETC订单即将超时取消（剩余5分钟），点击立即支付：xw.cn/order/xxx 退订回T
+      </td>
+      <td style="padding:8px 12px;color:#64748d;font-size:11px;">剩余 <b>5 分钟</b>时触发</td>
+    </tr>
+    <tr style="border-bottom:2px solid #e3e8ee;"><td colspan="3" style="padding:4px 12px;font-size:10px;color:#aaa;">↑ 微信消息提前告知，短信作为订单超时前最后提醒</td></tr>
+
+    <!-- 待提交资料 -->
+    <tr style="border-bottom:1px solid #f0f0f0;background:#fafafa;">
+      <td rowspan="2" style="padding:10px 12px;font-weight:700;color:#fa8c16;background:#fffbe6;border-right:2px solid #ffe58f;">待提交资料<br/><small style="font-weight:400;color:#64748d;">支付后24h</small></td>
+      <td style="padding:8px 12px;color:#576b95;font-weight:600;">订阅消息<br/>公众号</td>
+      <td style="padding:8px 12px;font-size:11px;background:#fafafa;">
+        <div style="color:#64748d;margin-bottom:4px;">标题：ETC 服务状态提醒</div>
+        当前状态：<b>待提交资料</b><br/>
+        车牌号：苏 E8F231<br/>
+        提醒时间：2026-06-12 14:00<br/>
+        说明：支付成功，请尽快提交资料
+      </td>
+      <td style="padding:8px 12px;color:#64748d;font-size:11px;">支付成功后 <b>24 小时</b>未提交</td>
+      <td rowspan="2" style="padding:10px 12px;text-align:center;background:#fafafa;">
+        <span style="background:#f6f9fc;color:#aaa;border:1px solid #e0e0e0;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700;">— 不发</span>
+        <div style="font-size:10px;color:#aaa;margin-top:4px;">无紧急<br/>节点</div>
+      </td>
+    </tr>
+    <tr style="border-bottom:2px solid #e3e8ee;background:#fafafa;"><td colspan="3" style="padding:4px 12px;font-size:10px;color:#aaa;">↑ 短信不发；若发货时仍未提交，由「发货后」场景处理</td></tr>
+
+    <!-- 发货后未提交资料 -->
+    <tr style="border-bottom:1px solid #f0f0f0;">
+      <td rowspan="3" style="padding:10px 12px;font-weight:700;color:#fa8c16;background:#fff7e6;border-right:2px solid #ffd591;">发货后<br/>未提交资料</td>
+      <td style="padding:8px 12px;color:#576b95;font-weight:600;">订阅消息<br/>公众号</td>
+      <td style="padding:8px 12px;font-size:11px;background:#f9f9f9;">
+        <div style="color:#64748d;margin-bottom:4px;">标题：ETC 服务状态提醒</div>
+        当前状态：<b>待提交资料</b><br/>
+        车牌号：苏 E8F231<br/>
+        提醒时间：2026-06-13 09:00<br/>
+        说明：设备已发出，请提前完成资料提交
+      </td>
+      <td style="padding:8px 12px;color:#64748d;font-size:11px;">发货时仍未提交，<b>立即</b>触发</td>
+      <td rowspan="3" style="padding:10px 12px;text-align:center;background:#fff7e6;">
+        <span style="background:#fff7e6;color:#d46b08;border:1px solid #ffd591;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700;">✅ 发</span>
+        <div style="font-size:10px;color:#64748d;margin-top:4px;">迟交资料<br/>无法激活</div>
+      </td>
+    </tr>
+    <tr style="border-bottom:1px solid #eee;">
+      <td style="padding:8px 12px;color:#e67e22;font-weight:600;">短信</td>
+      <td style="padding:8px 12px;font-size:11px;background:#fff7e6;border-left:3px solid #ffd591;">
+        【小万出行】您的ETC设备已发出，请尽快提交资料：xw.cn/docs/xxx 退订回T
+      </td>
+      <td style="padding:8px 12px;color:#64748d;font-size:11px;">与微信消息同步发出</td>
+    </tr>
+    <tr style="border-bottom:2px solid #e3e8ee;"><td colspan="3" style="padding:4px 12px;font-size:10px;color:#aaa;">↑ 此场景覆盖「支付后24h未提交」，发货触发优先级更高</td></tr>
+
+    <!-- 资料审核驳回 -->
+    <tr style="border-bottom:1px solid #f0f0f0;background:#fafafa;">
+      <td rowspan="3" style="padding:10px 12px;font-weight:700;color:#cf1322;background:#fff1f0;border-right:2px solid #ffa39e;">资料审核驳回</td>
+      <td style="padding:8px 12px;color:#576b95;font-weight:600;">订阅消息<br/>公众号</td>
+      <td style="padding:8px 12px;font-size:11px;background:#fafafa;">
+        <div style="color:#64748d;margin-bottom:4px;">标题：ETC 服务状态提醒</div>
+        当前状态：<b style="color:#cf1322;">资料审核未通过</b><br/>
+        车牌号：苏 E8F231<br/>
+        提醒时间：2026-06-13 14:22<br/>
+        说明：您的资料审核未通过，请查看原因并重新提交
+      </td>
+      <td style="padding:8px 12px;color:#64748d;font-size:11px;">审核驳回后<b>立即</b>触发</td>
+      <td rowspan="3" style="padding:10px 12px;text-align:center;background:#fff1f0;">
+        <span style="background:#fff1f0;color:#cf1322;border:1px solid #ffa39e;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700;">✅ 发</span>
+        <div style="font-size:10px;color:#64748d;margin-top:4px;">履约链路<br/>阻断</div>
+      </td>
+    </tr>
+    <tr style="border-bottom:1px solid #eee;background:#fafafa;">
+      <td style="padding:8px 12px;color:#e67e22;font-weight:600;">短信</td>
+      <td style="padding:8px 12px;font-size:11px;background:#fff1f0;border-left:3px solid #ffa39e;">
+        【小万出行】您的ETC资料审核未通过，请查看驳回原因并重新提交：xw.cn/docs/xxx 退订回T
+      </td>
+      <td style="padding:8px 12px;color:#64748d;font-size:11px;">与微信消息同步发出</td>
+    </tr>
+    <tr style="border-bottom:2px solid #e3e8ee;background:#fafafa;"><td colspan="3" style="padding:4px 12px;font-size:10px;color:#aaa;">↑ 驳回必须主动重提，影响签约和发货，需双渠道确保用户看到</td></tr>
+
+    <!-- 资料审核通过 -->
+    <tr style="border-bottom:1px solid #f0f0f0;">
+      <td rowspan="2" style="padding:10px 12px;font-weight:700;color:#16a34a;border-right:2px solid #b7eb8f;">资料审核通过</td>
+      <td style="padding:8px 12px;color:#576b95;font-weight:600;">订阅消息<br/>公众号</td>
+      <td style="padding:8px 12px;font-size:11px;background:#f9f9f9;">
+        <div style="color:#64748d;margin-bottom:4px;">标题：ETC 服务状态提醒</div>
+        当前状态：<b style="color:#16a34a;">资料审核通过</b><br/>
+        车牌号：苏 E8F231<br/>
+        提醒时间：2026-06-13 16:00<br/>
+        说明：资料审核通过
+      </td>
+      <td style="padding:8px 12px;color:#64748d;font-size:11px;">审核通过后<b>立即</b>触发</td>
+      <td rowspan="2" style="padding:10px 12px;text-align:center;">
+        <span style="background:#f6f9fc;color:#aaa;border:1px solid #e0e0e0;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700;">— 不发</span>
+        <div style="font-size:10px;color:#aaa;margin-top:4px;">正向进展<br/>不紧急</div>
+      </td>
+    </tr>
+    <tr style="border-bottom:2px solid #e3e8ee;"><td colspan="3" style="padding:4px 12px;font-size:10px;color:#aaa;">↑ 正向消息，微信通知即可</td></tr>
+
+    <!-- 待激活·签收立即 -->
+    <tr style="border-bottom:1px solid #f0f0f0;background:#fafafa;">
+      <td rowspan="2" style="padding:10px 12px;font-weight:700;color:#237804;background:#f0fdf4;border-right:2px solid #b7eb8f;">待激活<br/><small style="font-weight:400;color:#64748d;">签收后立即</small></td>
+      <td style="padding:8px 12px;color:#576b95;font-weight:600;">订阅消息<br/>公众号</td>
+      <td style="padding:8px 12px;font-size:11px;background:#fafafa;">
+        <div style="color:#64748d;margin-bottom:4px;">标题：ETC 服务状态提醒</div>
+        当前状态：<b>设备已到货</b><br/>
+        车牌号：苏 E8F231<br/>
+        提醒时间：2026-06-15 11:00<br/>
+        说明：您的ETC设备已签收，立即激活即可使用<br/>
+        <span style="color:#d46b08;font-size:10px;">（以旧换新）新设备已到货，激活后旧设备将自动注销，请确认后操作</span>
+      </td>
+      <td style="padding:8px 12px;color:#64748d;font-size:11px;">物流签收后<b>立即</b>触发</td>
+      <td rowspan="2" style="padding:10px 12px;text-align:center;background:#f0fdf4;">
+        <span style="background:#f6f9fc;color:#aaa;border:1px solid #e0e0e0;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700;">— 不发</span>
+        <div style="font-size:10px;color:#aaa;margin-top:4px;">刚到货<br/>给缓冲</div>
+      </td>
+    </tr>
+    <tr style="border-bottom:2px solid #e3e8ee;background:#fafafa;"><td colspan="3" style="padding:4px 12px;font-size:10px;color:#aaa;">↑ 设备刚到，用户需要安装时间，不立即催促</td></tr>
+
+    <!-- 待激活·48h未激活 -->
+    <tr style="border-bottom:1px solid #f0f0f0;">
+      <td rowspan="3" style="padding:10px 12px;font-weight:700;color:#237804;background:#f0fdf4;border-right:2px solid #b7eb8f;">待激活<br/><small style="font-weight:400;color:#64748d;">48h未激活</small></td>
+      <td style="padding:8px 12px;color:#576b95;font-weight:600;">订阅消息<br/>公众号</td>
+      <td style="padding:8px 12px;font-size:11px;background:#f9f9f9;">
+        <div style="color:#64748d;margin-bottom:4px;">标题：ETC 服务状态提醒</div>
+        当前状态：<b>设备已到货</b><br/>
+        车牌号：苏 E8F231<br/>
+        提醒时间：2026-06-17 11:00<br/>
+        说明：您的ETC设备已签收，立即激活即可使用
+      </td>
+      <td style="padding:8px 12px;color:#64748d;font-size:11px;">签收后 <b>48 小时</b>未激活</td>
+      <td rowspan="3" style="padding:10px 12px;text-align:center;background:#f0fdf4;">
+        <span style="background:#f0fdf4;color:#237804;border:1px solid #b7eb8f;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700;">✅ 发</span>
+        <div style="font-size:10px;color:#64748d;margin-top:4px;">可能遗忘<br/>或遇问题</div>
+      </td>
+    </tr>
+    <tr style="border-bottom:1px solid #eee;">
+      <td style="padding:8px 12px;color:#e67e22;font-weight:600;">短信</td>
+      <td style="padding:8px 12px;font-size:11px;background:#f0fdf4;border-left:3px solid #b7eb8f;">
+        【小万出行】您的ETC设备已到货2天，尚未激活。激活后即可享高速95折，点击激活：xw.cn/activate/xxx 退订回T
+      </td>
+      <td style="padding:8px 12px;color:#64748d;font-size:11px;">与微信消息同步发出</td>
+    </tr>
+    <tr style="border-bottom:2px solid #e3e8ee;"><td colspan="3" style="padding:4px 12px;font-size:10px;color:#aaa;">↑ 以旧换新版本短信额外说明：激活后旧设备将自动注销</td></tr>
+
+  </tbody>
+</table>
+
+<div style="background:#fffbe6;border:1px solid #ffe58f;border-radius:8px;padding:12px 16px;font-size:11px;color:#614700;line-height:1.9;margin-bottom:28px;">
+  <b>⚠ 待确认：</b><br/>
+  · 「发货后未提交资料」与「支付后24h」重叠时，建议以发货触发覆盖上一条，避免重复发微信消息<br/>
+  · 短信模版内容需运营商报备，「退订回T」为必填项<br/>
+  · 用户关闭订阅消息权限后，微信消息失效，短信作为唯一兜底，是否需要更早触发（如待付款改为15分钟触发短信）？
+</div>
+
+
 </div>
 
 </body>
