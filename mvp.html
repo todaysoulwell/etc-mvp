@@ -143,6 +143,21 @@ body{font-family:'Inter','PingFang SC','SF Pro Display',-apple-system,BlinkMacSy
 .admin-tbl th{padding:10px 12px;background:#f6f9fc;border-bottom:2px solid #e3e8ee;text-align:left;font-weight:600;color:#555;white-space:nowrap;}
 .admin-tbl td{padding:10px 12px;border-bottom:1px solid #f0f0f0;vertical-align:middle;}
 .admin-tbl tr:last-child td{border-bottom:none;}
+.prod-table-wrap{overflow-x:auto;}
+.prod-sort-cell{display:flex;flex-direction:column;align-items:center;gap:5px;min-width:76px;padding:6px 4px!important;}
+.prod-sort-num{font-size:14px;font-weight:800;color:#533afd;line-height:1;font-variant-numeric:tabular-nums;}
+.prod-sort-label{font-size:10px;color:#94a3b8;white-space:nowrap;}
+.prod-sort-btns{display:flex;gap:4px;}
+.prod-sort-btn{background:#fff;border:1px solid #d0d7de;border-radius:6px;width:28px;height:24px;cursor:pointer;font-size:12px;line-height:1;color:#0d253d;display:flex;align-items:center;justify-content:center;}
+.prod-sort-btn:hover:not(:disabled){background:#f6f9fc;border-color:#533afd;color:#533afd;}
+.prod-sort-btn:disabled{opacity:.35;cursor:not-allowed;}
+.prod-default-cell{min-width:88px;text-align:center;padding:6px 8px!important;}
+.prod-default-btn{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;border:1px solid #e3e8ee;background:#fff;color:#64748d;cursor:pointer;white-space:nowrap;display:inline-block;}
+.prod-default-btn.is-default{background:#f0fdf4;border-color:#86efac;color:#15803d;box-shadow:0 0 0 2px rgba(34,197,94,.12);}
+.prod-default-btn:disabled{opacity:.45;cursor:not-allowed;background:#f8fafc;}
+.prod-default-summary{background:linear-gradient(90deg,#f8f9ff,#fafbff);border:1px solid #c7d2fe;border-radius:10px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.prod-default-summary-main{flex:1;min-width:200px;}
+.prod-default-summary-val{display:flex;align-items:center;gap:8px;flex-shrink:0;}
 /* ── 进度胶囊 ── */
 .progress-pill{background:#eef2ff;border:1px solid #533afd;border-radius:10px;padding:12px 14px;margin:0 12px 10px;}
 .pp-status{font-size:11px;font-weight:700;color:#533afd;background:#fff;border:1px solid #adc6ff;display:inline-block;padding:1px 7px;border-radius:4px;margin-bottom:5px;}
@@ -443,6 +458,7 @@ input[style*="border:none"]{
   <div class="nav-sep"></div>
   <span style="font-size:11px;font-weight:700;color:#531dab;background:#f9f0ff;padding:2px 8px;border-radius:4px;white-space:nowrap;margin-right:4px;">运营后台</span>
   <button class="nav-tab" onclick="goPage('page-ops-admin',this)">后台·订单管理</button>
+  <button class="nav-tab" onclick="goPage('page-ops-admin',this);setTimeout(function(){switchAdminPanel('analytics');},0)">📊 转化数据</button>
 </nav>
 
 <!-- ═══════════════════════════════════════
@@ -452,8 +468,12 @@ input[style*="border:none"]{
   <div style="max-width:900px;margin:0 auto;">
 
     <div style="margin-bottom:14px;padding:14px 16px;background:#eef2ff;border:1px solid #91caff;border-radius:8px;font-size:12.5px;color:#0958d9;line-height:1.85;">
-      <strong>ETC 单片 · MVP 原型 v1.4</strong> &nbsp;·&nbsp; 文件路径：<code style="font-size:11px;background:rgba(0,0,0,.06);padding:1px 5px;border-radius:3px;">/Users/huisexiaoqi/Documents/etc-tradein/mvp.html</code><br/>
-      <span style="font-size:12px;color:#555;">顶部 Tab：需求说明 · 需求2（以旧换新）· 需求1（搜索→购买）</span>
+      <strong>ETC 单片 · MVP 原型 v1.7</strong> &nbsp;·&nbsp; 本地路径：<code style="font-size:11px;background:rgba(0,0,0,.06);padding:1px 5px;border-radius:3px;">/Users/huisexiaoqi/Documents/etc-tradein/mvp.html</code><br/>
+      <strong>H5 链接（GitHub Pages）：</strong>
+      <a href="https://todaysoulwell.github.io/etc-mvp/mvp.html" target="_blank" rel="noopener" style="color:#0958d9;font-weight:700;">https://todaysoulwell.github.io/etc-mvp/mvp.html</a>
+      &nbsp;·&nbsp; 首页跳转：<a href="https://todaysoulwell.github.io/etc-mvp/" target="_blank" rel="noopener" style="color:#0958d9;">https://todaysoulwell.github.io/etc-mvp/</a><br/>
+      <span style="font-size:11px;color:#64748d;">更新线上版本：在本机终端执行 <code style="font-size:10px;background:rgba(0,0,0,.06);padding:1px 4px;border-radius:3px;">cd /Users/huisexiaoqi/Documents/etc-tradein && gh auth login && ./deploy-github-pages.sh etc-mvp</code></span><br/>
+      <span style="font-size:12px;color:#555;">顶部 Tab：需求说明 · 需求2（以旧换新）· 需求1（搜索→购买）· 转化数据看板</span>
     </div>
 
     <!-- ── 运营全局视角 ── -->
@@ -516,7 +536,7 @@ input[style*="border:none"]{
         <div style="border:1.5px solid #e3e8ee;border-radius:10px;overflow:hidden;">
 
           <!-- 表头：用户阶段（7列）-->
-          <div style="display:grid;grid-template-columns:80px repeat(6,1fr);background:#fafafa;border-bottom:1px solid #e3e8ee;">
+          <div style="display:grid;grid-template-columns:80px repeat(7,1fr);background:#fafafa;border-bottom:1px solid #e3e8ee;">
             <div style="padding:10px 8px;font-size:11px;font-weight:800;color:#555;display:flex;align-items:center;">用户阶段</div>
             <div style="padding:10px 8px;background:#e6f0ff;text-align:center;">
               <div style="font-size:11px;font-weight:700;color:#1677ff;">用户未购买设备</div>
@@ -529,7 +549,7 @@ input[style*="border:none"]{
             </div>
             <div style="padding:10px 8px;background:#fff7e6;text-align:center;border-left:1px solid #ffe58f;">
               <div style="font-size:11px;font-weight:700;color:#d46b08;">设备临近过期</div>
-              <div style="font-size:9px;color:#fa8c16;margin-top:2px;">24 — 33 个月</div>
+              <div style="font-size:9px;color:#fa8c16;margin-top:2px;">31 — 33 个月</div>
             </div>
             <div style="padding:10px 8px;background:#fff3cd;text-align:center;border-left:1px solid #ffc53d;">
               <div style="font-size:11px;font-weight:700;color:#ad6800;">设备临近过期</div>
@@ -538,10 +558,15 @@ input[style*="border:none"]{
             <div style="padding:10px 8px;background:#f9f0ff;text-align:center;border-left:1px solid #d3adf7;">
               <div style="font-size:11px;font-weight:700;color:#531dab;">设备已过期</div>
             </div>
+            <div style="padding:10px 8px;background:#fff2f0;text-align:center;border-left:1px solid #ffa39e;">
+              <div style="font-size:11px;font-weight:700;color:#a8071a;">⚡ 特殊场景</div>
+              <div style="font-size:9px;color:#cf1322;margin-top:2px;">设备异常检测</div>
+              <div style="font-size:9px;color:#888;margin-top:1px;">质保剩余12个月内</div>
+            </div>
           </div>
 
           <!-- 变现模式行 -->
-          <div style="display:grid;grid-template-columns:80px repeat(6,1fr);border-bottom:1px solid #f0f0f0;">
+          <div style="display:grid;grid-template-columns:80px repeat(7,1fr);border-bottom:1px solid #f0f0f0;">
             <div style="padding:10px 8px;font-size:11px;font-weight:800;color:#555;background:#fafafa;display:flex;align-items:center;border-right:1px solid #f0f0f0;">变现模式</div>
             <div style="padding:10px 8px;background:#f0edff;text-align:center;display:flex;align-items:center;justify-content:center;">
               <span style="font-size:12px;font-weight:700;color:#1677ff;background:#eef2ff;padding:4px 12px;border-radius:8px;border:1px dashed #91caff;">购买</span>
@@ -562,10 +587,13 @@ input[style*="border:none"]{
             <div style="padding:10px 8px;background:#f9f0ff;text-align:center;border-left:1px solid #f0f0f0;display:flex;align-items:center;justify-content:center;">
               <span style="font-size:12px;font-weight:700;color:#531dab;background:#f9f0ff;padding:4px 12px;border-radius:8px;border:1px dashed #d3adf7;">以旧换新</span>
             </div>
+            <div style="padding:10px 8px;background:#fff2f0;text-align:center;border-left:1px solid #f0f0f0;display:flex;align-items:center;justify-content:center;">
+              <span style="font-size:11px;font-weight:700;color:#a8071a;background:#fff2f0;padding:4px 12px;border-radius:8px;border:1px dashed #ffa39e;">以旧换新</span>
+            </div>
           </div>
 
           <!-- 途径行 -->
-          <div style="display:grid;grid-template-columns:80px repeat(6,1fr);border-bottom:1px solid #f0f0f0;">
+          <div style="display:grid;grid-template-columns:80px repeat(7,1fr);border-bottom:1px solid #f0f0f0;">
             <div style="padding:10px 8px;font-size:11px;font-weight:800;color:#555;background:#fafafa;display:flex;align-items:center;border-right:1px solid #f0f0f0;">途径</div>
             <div style="padding:10px 8px;font-size:10px;color:#555;line-height:1.7;background:#f0edff;">
               微信搜索广告<br/>微信朋友圈广告<br/><span style="color:#64748d;font-weight:700;">站内：</span>小程序内 banner<br/>小程序内弹窗
@@ -586,13 +614,17 @@ input[style*="border:none"]{
               <span style="color:#64748d;font-weight:700;">站内：</span>banner、弹窗、跑马灯
             </div>
             <div style="padding:10px 8px;font-size:10px;color:#555;line-height:1.7;background:#f9f0ff;border-left:1px solid #f0f0f0;">
-              <span style="color:#64748d;font-weight:700;">站外：</span>短信、公众号消息<br/>
-              <span style="color:#64748d;font-weight:700;">站内：</span>banner、弹窗
+              <span style="color:#64748d;font-weight:700;">站外：</span>短信、公众号消息、小程序订阅消息<br/>
+              <span style="color:#64748d;font-weight:700;">站内：</span>banner、弹窗、跑马灯
+            </div>
+            <div style="padding:10px 8px;font-size:10px;color:#555;line-height:1.7;background:#fff2f0;border-left:1px solid #f0f0f0;">
+              <span style="color:#64748d;font-weight:700;">站外：</span>短信、公众号消息、小程序订阅消息<br/>
+              <span style="color:#888;font-size:9px;">异常发生后1小时触发，仅1次</span>
             </div>
           </div>
 
           <!-- 核心指标行 -->
-          <div style="display:grid;grid-template-columns:80px repeat(6,1fr);">
+          <div style="display:grid;grid-template-columns:80px repeat(7,1fr);">
             <div style="padding:10px 8px;font-size:11px;font-weight:800;color:#555;background:#fafafa;display:flex;align-items:center;border-right:1px solid #f0f0f0;">核心指标</div>
             <div style="padding:10px 8px;background:#f0edff;font-size:10px;color:#0958d9;line-height:1.8;">
               订单支付率
@@ -611,6 +643,9 @@ input[style*="border:none"]{
             </div>
             <div style="padding:10px 8px;background:#f9f0ff;font-size:10px;color:#531dab;line-height:1.8;border-left:1px solid #f0f0f0;">
               订单支付率<br/>（UV→支付）<br/>已过期设备<br/>换新率
+            </div>
+            <div style="padding:10px 8px;background:#fff2f0;font-size:10px;color:#a8071a;line-height:1.8;border-left:1px solid #f0f0f0;">
+              以旧换新：<br/>订单支付率<br/>（UV→支付）
             </div>
           </div>
 
@@ -726,6 +761,46 @@ input[style*="border:none"]{
       </div>
     </details>
 
+
+    <!-- ── 转化数据监测 ── -->
+    <details class="req-block" open>
+      <summary>📈 转化数据监测 · 新购 vs 以旧换新 <span class="hint">投流漏斗 · 站内漏斗 · 履约漏斗</span></summary>
+      <div class="req-content">
+        <div class="info-box" style="margin-bottom:12px;">📌 运营后台新增 <strong>「转化数据看板」</strong>（`page-ops-admin` → 左侧导航），用于监测两条需求线的整体转化表现。数据为原型 Mock，上线后对接埋点/数仓。</div>
+
+        <div style="font-size:12px;font-weight:800;color:#533afd;margin-bottom:8px;">🛒 新购（含站外投流）</div>
+        <table class="admin-tbl" style="margin-bottom:14px;">
+          <thead><tr><th>指标</th><th>口径</th><th>原型目标</th><th>埋点事件（建议）</th></tr></thead>
+          <tbody>
+            <tr><td><b>广告花费</b></td><td>搜一搜 + 朋友圈等渠道消耗</td><td>—</td><td>ad_cost（后台同步）</td></tr>
+            <tr><td><b>落地 UV</b></td><td>进入办理首页 page-home 的去重用户</td><td>—</td><td>page_home_view</td></tr>
+            <tr><td><b>下单率</b></td><td>提交订单 UV / 落地 UV</td><td><span class="tag t-green">9.0%</span></td><td>order_submit / page_home_view</td></tr>
+            <tr><td><b>支付转化率</b></td><td>支付成功 UV / 落地 UV</td><td><span class="tag t-green">4.0%</span></td><td>pay_success / page_home_view</td></tr>
+            <tr><td><b>CPA</b></td><td>广告花费 / 支付成功单量</td><td>—</td><td>计算字段</td></tr>
+            <tr><td><b>激活率</b></td><td>激活完成 / 支付成功</td><td>≥90%</td><td>activate_success / pay_success</td></tr>
+          </tbody>
+        </table>
+        <div style="font-size:11px;color:#64748d;margin-bottom:16px;line-height:1.7;"><b>投流漏斗：</b>广告曝光 → 广告点击 → 落地页 UV → SKU 页 UV → 提交订单 → 支付成功 → 激活完成。需按渠道（搜一搜 / 朋友圈）拆分花费、CTR、支付转化率、CPA。</div>
+
+        <div style="font-size:12px;font-weight:800;color:#d46b08;margin-bottom:8px;">🔄 以旧换新（站内触达为主）</div>
+        <table class="admin-tbl" style="margin-bottom:14px;">
+          <thead><tr><th>指标</th><th>口径</th><th>原型目标</th><th>埋点事件（建议）</th></tr></thead>
+          <tbody>
+            <tr><td><b>升级首页 UV</b></td><td>进入 page-tradein-home</td><td>—</td><td>tradein_home_view</td></tr>
+            <tr><td><b>估价完成率</b></td><td>评估结果页 UV / 升级首页 UV</td><td>—</td><td>valuation_view / tradein_home_view</td></tr>
+            <tr><td><b>下单率</b></td><td>提交订单 UV / 升级首页 UV</td><td><span class="tag t-orange">10.4%</span></td><td>order_submit / tradein_home_view</td></tr>
+            <tr><td><b>支付转化率</b></td><td>支付成功 UV / 升级首页 UV</td><td><span class="tag t-orange">4.6%</span></td><td>pay_success / tradein_home_view</td></tr>
+            <tr><td><b>过期设备换新率</b></td><td>完成换新用户数 / 已过期设备用户数</td><td><span class="tag t-orange">3%</span></td><td>tradein_complete / expired_device_pool</td></tr>
+            <tr><td><b>激活率</b></td><td>激活完成 / 支付成功</td><td>≥90%</td><td>activate_success / pay_success</td></tr>
+          </tbody>
+        </table>
+        <div style="font-size:11px;color:#64748d;margin-bottom:12px;line-height:1.7;"><b>站内漏斗：</b>升级首页 → 估价 → 评估结果 → 提交订单 → 支付 → 激活。需按触达渠道（短信 / 公众号 / 站内 Banner / 状态条）拆分贡献。</div>
+
+        <div class="warn-box">⚠ 新购与换新<strong>必须分 Tab 监测</strong>，不可合并漏斗；新购需关联投流花费算 ROI，换新以触达渠道归因为主。</div>
+      </div>
+    </details>
+
+
     <!-- ── 整体范围 ── -->
     <details class="req-block" open>
       <summary>📘 MVP 整体范围 · 两条需求线 <span class="hint">（点击展开）</span></summary>
@@ -753,6 +828,11 @@ input[style*="border:none"]{
                     <div style="font-size:11px;font-weight:800;color:#d46b08;">支付转化率</div>
                     <div style="font-size:13px;font-weight:900;color:#d46b08;margin-top:2px;">4.6%</div>
                     <div style="font-size:9px;color:#64748d;margin-top:1px;">页面访问 → 支付成功</div>
+                  </div>
+                  <div style="background:#fff7e6;border:1px solid #ffd591;border-radius:8px;padding:6px 10px;">
+                    <div style="font-size:11px;font-weight:800;color:#d46b08;">换新率</div>
+                    <div style="font-size:13px;font-weight:900;color:#d46b08;margin-top:2px;">3%</div>
+                    <div style="font-size:9px;color:#64748d;margin-top:1px;">已过期设备用户 → 完成换新</div>
                   </div>
                 </div>
               </td>
@@ -783,7 +863,7 @@ input[style*="border:none"]{
             </tr>
             <tr>
               <td><span class="tag t-grey">运营</span><br/>管理后台</td>
-              <td>新购订单管理 + 以旧换新订单管理</td>
+              <td>新购/换新订单管理 + 商品配置 + <strong>转化数据看板</strong></td>
               <td>
                 · 统一筛选项：全部/待支付/履约中/待激活/已完结/已开票<br/>
                 · 无活动配置模块
@@ -1327,6 +1407,11 @@ input[style*="border:none"]{
         </div>
         <!-- 吸底 CTA -->
         <div style="flex-shrink:0;background:#fff;border-top:1px solid #f0f0f0;padding:10px 14px 20px;">
+          <div style="display:flex;justify-content:center;gap:8px;margin-bottom:8px;">
+            <span style="background:#fff7ed;color:#c2410c;font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;border:1px solid #fed7aa;">🛣️ 高速 95 折</span>
+            <span style="background:#f0fdf4;color:#15803d;font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;border:1px solid #bbf7d0;">⚡ 极速办理</span>
+            <span style="background:#eff6ff;color:#1d4ed8;font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;border:1px solid #bfdbfe;">🛡️ 质保 3 年</span>
+          </div>
           <button style="width:100%;background:#16a34a;color:#fff;border:none;border-radius:24px;padding:13px;font-size:15px;font-weight:700;cursor:pointer;" onclick="goPage('page-sku',null)">立即办理</button>
         </div>
       </div>
@@ -2758,12 +2843,24 @@ input[style*="border:none"]{
             <div style="font-size:13px;color:#64748d;">新品上市 · 多位置安装</div>
           </div>
         </div>
-        <div style="flex-shrink:0;background:#fff;border-top:1px solid #f0f0f0;padding:10px 14px 20px;display:flex;align-items:center;gap:12px;">
-          <div style="text-align:center;cursor:pointer;flex-shrink:0;" onclick="goPage('page-order-list',null)">
-            <div style="font-size:20px;">📋</div>
-            <div style="font-size:10px;color:#64748d;margin-top:2px;">我的订单</div>
+        <div style="flex-shrink:0;background:#fff;border-top:1px solid #f0f0f0;padding:10px 14px 20px;">
+          <!-- 使用天数催化提示，超300天时展示 -->
+          <div id="tradein-nudge" style="display:none;margin-bottom:8px;padding:7px 12px;background:linear-gradient(90deg,#fff7ed,#fef3c7);border-radius:10px;border-left:3px solid #f59e0b;display:flex;align-items:center;gap:6px;">
+            <span style="font-size:14px;">⏳</span>
+            <span id="tradein-nudge-text" style="font-size:12px;color:#92400e;font-weight:500;line-height:1.4;"></span>
           </div>
-          <button style="flex:1;background:#533afd;color:#fff;border:none;border-radius:24px;padding:13px;font-size:15px;font-weight:700;cursor:pointer;" onclick="startTradeinValuation()">旧设备估价</button>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="text-align:center;cursor:pointer;flex-shrink:0;" onclick="goPage('page-order-list',null)">
+              <div style="font-size:20px;">📋</div>
+              <div style="font-size:10px;color:#64748d;margin-top:2px;">我的订单</div>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:5px;">
+              <div style="text-align:center;font-size:11px;color:#94a3b8;">
+                换新最高补贴 <span style="color:#e53e3e;font-weight:700;">¥60</span>，限时进行中
+              </div>
+              <button style="width:100%;background:#533afd;color:#fff;border:none;border-radius:24px;padding:13px;font-size:15px;font-weight:700;cursor:pointer;" onclick="startTradeinValuation()">旧设备估价</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -2882,18 +2979,43 @@ input[style*="border:none"]{
           </div>
 
           <!-- 估价结果卡 -->
-          <div class="vp-card" style="padding:0;overflow:hidden;">
-            <div class="vp-valuation-badge">
-              <div>
-                <div style="font-size:11px;color:rgba(255,255,255,.6);margin-bottom:4px;">旧设备估价抵扣</div>
-                <div id="val-price" style="font-size:36px;font-weight:800;color:#fff;letter-spacing:-1px;line-height:1;">-¥40</div>
-                <div id="val-plate-info" style="font-size:11px;color:rgba(255,255,255,.55);margin-top:5px;">已使用 506天 · 旧款ETC</div>
+          <!-- 旧设备估价结果卡 -->
+          <div class="vp-card" style="padding:14px 14px 12px;">
+            <div style="font-size:11px;font-weight:600;color:#94a3b8;letter-spacing:.4px;margin-bottom:10px;">旧ETC估价结果</div>
+            <!-- 主信息行 -->
+            <div style="display:flex;align-items:center;gap:12px;">
+              <!-- 设备图 -->
+              <div style="width:60px;height:44px;background:#f1f5f9;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+                <img src="https://etc.bj.10086.cn/mall/img/goods/1040100010000001.jpg" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';this.parentNode.innerHTML='<span style=\'font-size:9px;color:#94a3b8;text-align:center\'>设备图</span>'"/>
               </div>
-              <div style="text-align:right;">
-                <div style="background:rgba(255,255,255,.12);border-radius:10px;padding:8px 12px;">
-                  <div style="font-size:10px;color:rgba(255,255,255,.6);">估价说明</div>
-                  <div style="font-size:11px;color:#fff;margin-top:3px;line-height:1.4;">抵扣已在<br/>各设备价格中<br/>直接反映</div>
+              <!-- 车牌 + 使用时长 -->
+              <div style="flex:1;min-width:0;">
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+                  <span style="background:#334155;color:#fff;font-size:10px;font-weight:600;border-radius:4px;padding:1px 6px;letter-spacing:.3px;">旧设备</span>
+                  <span id="val-plate-no" style="font-size:14px;font-weight:700;color:#0d253d;letter-spacing:.5px;">冀JEG030</span>
                 </div>
+                <div style="font-size:11px;color:#64748d;">已使用 <span id="val-used-days" style="font-weight:600;color:#0d253d;">506</span> 天</div>
+              </div>
+              <!-- 抵扣金额 -->
+              <div style="text-align:right;flex-shrink:0;">
+                <div id="val-price" style="font-size:22px;font-weight:800;color:#e53e3e;letter-spacing:-1px;font-variant-numeric:tabular-nums;">−¥40</div>
+                <div style="font-size:10px;color:#94a3b8;margin-top:1px;">办理可抵扣</div>
+              </div>
+            </div>
+            <!-- 健康度指标行 -->
+            <div id="val-health-row" style="display:flex;gap:0;margin-top:12px;padding-top:10px;border-top:1px solid #f1f5f9;">
+              <div style="flex:1;display:flex;align-items:center;gap:5px;">
+                <span style="font-size:12px;">⚠️</span>
+                <span style="font-size:11px;color:#64748d;">设备故障率</span>
+                <span style="font-size:12px;">🔼</span>
+                <span id="val-fault-rate" style="font-size:13px;font-weight:700;color:#f59e0b;font-variant-numeric:tabular-nums;">8%</span>
+              </div>
+              <div style="width:1px;background:#f1f5f9;margin:0 4px;"></div>
+              <div style="flex:1;display:flex;align-items:center;gap:5px;padding-left:10px;">
+                <span style="font-size:12px;">🔋</span>
+                <span style="font-size:11px;color:#64748d;">电池健康度</span>
+                <span style="font-size:12px;">🔽</span>
+                <span id="val-battery" style="font-size:13px;font-weight:700;color:#f59e0b;font-variant-numeric:tabular-nums;">12%</span>
               </div>
             </div>
           </div>
@@ -4173,6 +4295,9 @@ input[style*="border:none"]{
       <div class="admin-sidebar-logo">小万出行 ETC<small>运营管理中心 · MVP</small></div>
       <button type="button" class="admin-nav-item active" id="adm-nav-buy" onclick="switchAdminPanel('buy')">🛒 新购订单管理</button>
       <button type="button" class="admin-nav-item" id="adm-nav-tradein" onclick="switchAdminPanel('tradein')">🔄 以旧换新订单</button>
+      <button type="button" class="admin-nav-item" id="adm-nav-product" onclick="switchAdminPanel('product')">📦 商品配置</button>
+      <button type="button" class="admin-nav-item" id="adm-nav-analytics" onclick="switchAdminPanel('analytics')">📊 转化数据看板</button>
+      <button type="button" class="admin-nav-item" id="adm-nav-discount" onclick="switchAdminPanel('discount')">💰 旧设备折扣</button>
     </aside>
     <main class="admin-main">
 
@@ -4311,6 +4436,426 @@ input[style*="border:none"]{
         <div class="info-box" style="margin-top:12px;">📌 以旧换新无需寄回旧设备；抵扣金额在下单时已扣除，后台仅展示估价车牌与抵扣明细供核对。</div>
       </div>
 
+      <!-- ── 商品配置 ── -->
+      <div id="adm-panel-product" class="admin-panel">
+        <div class="admin-topbar">
+          <h1>商品配置</h1>
+          <button class="btn btn-primary btn-sm" onclick="showProductDetail('new')">+ 新增商品</button>
+        </div>
+
+        <!-- 业务类型 Tab -->
+        <div style="display:flex;gap:0;border-bottom:2px solid #e3e8ee;margin-bottom:16px;">
+          <button id="prod-tab-new" onclick="switchProductTab('new-purchase')"
+            style="padding:8px 20px;font-size:13px;font-weight:600;border:none;background:none;cursor:pointer;color:#533afd;border-bottom:2px solid #533afd;margin-bottom:-2px;">
+            新购商品
+          </button>
+          <button id="prod-tab-tradein" onclick="switchProductTab('trade-in')"
+            style="padding:8px 20px;font-size:13px;font-weight:600;border:none;background:none;cursor:pointer;color:#94a3b8;border-bottom:2px solid transparent;margin-bottom:-2px;">
+            以旧换新商品
+          </button>
+        </div>
+
+        <!-- ── 新购商品列表 ── -->
+        <div id="prod-list-new-purchase" class="panel-card" style="padding:16px;margin-bottom:20px;">
+          <div id="np-default-summary" class="prod-default-summary">
+            <div class="prod-default-summary-main">
+              <div style="font-size:12px;font-weight:700;color:#0d253d;">C端默认选中商品 · 新购</div>
+              <div style="font-size:11px;color:#64748d;margin-top:3px;line-height:1.5;">用户进入「确认订单 / SKU 页」时，默认高亮并预选该商品；仅<strong>已上架</strong>商品可设为默认</div>
+            </div>
+            <div class="prod-default-summary-val">
+              <span id="np-default-name" style="font-size:13px;font-weight:700;color:#533afd;">2026款AI语音ETC</span>
+              <span id="np-default-id" class="admin-badge" style="background:#eef2ff;color:#533afd;">NP-001</span>
+            </div>
+          </div>
+          <div class="prod-table-wrap">
+          <table class="admin-tbl" id="prod-tbl-new-purchase">
+            <tr>
+              <th style="width:88px;">展示顺序</th><th style="width:96px;">默认商品</th><th>商品ID</th><th>商品名称</th><th style="width:72px;">售价</th><th style="width:72px;">状态</th><th>关联权益</th><th style="width:120px;">操作</th>
+            </tr>
+            <tr data-on-shelf="1" data-prod-id="NP-001">
+<td class="prod-sort-display" style="text-align:center;"><span class="admin-badge prod-sort-badge" style="background:#eef2ff;color:#533afd;">第 1 位</span></td>
+              <td class="prod-default-display" style="text-align:center;"><span class="admin-badge prod-default-badge is-default-badge" style="background:#f0fdf4;color:#15803d;">★ 默认</span></td>
+              <td style="color:#94a3b8;font-size:11px;">NP-001</td>
+              <td><b>2026款AI语音ETC</b><br/><span style="font-size:11px;color:#94a3b8;">OBU·后贴式</span></td>
+              <td>¥139</td>
+              <td><span class="admin-badge" style="background:#f0fdf4;color:#22c55e;">上架</span></td>
+              <td>
+                <span style="font-size:11px;background:#fff7e6;color:#d46b08;padding:2px 6px;border-radius:4px;margin-right:4px;">质保3年</span>
+                <span style="font-size:11px;background:#f0fdf4;color:#22c55e;padding:2px 6px;border-radius:4px;margin-right:4px;">高速95折</span>
+                <span style="font-size:11px;background:#e6fffb;color:#08979c;padding:2px 6px;border-radius:4px;">洗车券×12</span>
+              </td>
+              <td>
+                <button class="btn btn-ghost btn-sm" onclick="showProductDetail('NP-001')">配置</button>
+                <button class="btn btn-ghost btn-sm" style="color:#ff4d4f;" onclick="alert('下架确认（原型）')">下架</button>
+              </td>
+            </tr>
+            <tr data-on-shelf="1" data-prod-id="NP-002">
+<td class="prod-sort-display" style="text-align:center;"><span class="admin-badge prod-sort-badge" style="background:#eef2ff;color:#533afd;">第 2 位</span></td>
+              <td class="prod-default-display" style="text-align:center;"><span style="color:#94a3b8;font-size:11px;">—</span></td>
+              <td style="color:#94a3b8;font-size:11px;">NP-002</td>
+              <td><b>AI语音超大屏ETC</b><br/><span style="font-size:11px;color:#94a3b8;">OBU·屏显</span></td>
+              <td>¥168</td>
+              <td><span class="admin-badge" style="background:#f0fdf4;color:#22c55e;">上架</span></td>
+              <td>
+                <span style="font-size:11px;background:#fff7e6;color:#d46b08;padding:2px 6px;border-radius:4px;margin-right:4px;">质保3年</span>
+                <span style="font-size:11px;background:#f0fdf4;color:#22c55e;padding:2px 6px;border-radius:4px;margin-right:4px;">高速95折</span>
+                <span style="font-size:11px;background:#f9f0ff;color:#531dab;padding:2px 6px;border-radius:4px;">道路救援</span>
+              </td>
+              <td>
+                <button class="btn btn-ghost btn-sm" onclick="showProductDetail('NP-002')">配置</button>
+                <button class="btn btn-ghost btn-sm" style="color:#ff4d4f;" onclick="alert('下架确认（原型）')">下架</button>
+              </td>
+            </tr>
+            <tr style="background:#fafafa;" data-on-shelf="0" data-prod-id="NP-003">
+<td class="prod-sort-display" style="text-align:center;"><span style="color:#94a3b8;font-size:11px;">—</span></td>
+              <td class="prod-default-display" style="text-align:center;"><span style="color:#94a3b8;font-size:11px;">—</span></td>
+              <td style="color:#94a3b8;font-size:11px;">NP-003</td>
+              <td><b>4代AI磁吸隐藏款</b><br/><span style="font-size:11px;color:#94a3b8;">OBU·隐藏式</span></td>
+              <td>¥198</td>
+              <td><span class="admin-badge" style="background:#fff2f0;color:#ff4d4f;">已下架</span></td>
+              <td><span style="font-size:11px;color:#94a3b8;">—</span></td>
+              <td>
+                <button class="btn btn-ghost btn-sm" onclick="showProductDetail('NP-003')">配置</button>
+                <button class="btn btn-ghost btn-sm" style="color:#16a34a;" onclick="alert('上架确认（原型）')">上架</button>
+              </td>
+            </tr>
+          </table>
+          </div>
+          <div style="margin-top:10px;font-size:11px;color:#94a3b8;">展示顺序与默认商品请在「配置」弹窗中设置；列表仅作只读预览</div>
+        </div>
+
+        <!-- ── 以旧换新商品列表 ── -->
+        <div id="prod-list-trade-in" class="panel-card" style="padding:16px;margin-bottom:20px;display:none;">
+          <div id="ti-default-summary" class="prod-default-summary">
+            <div class="prod-default-summary-main">
+              <div style="font-size:12px;font-weight:700;color:#0d253d;">C端默认选中商品 · 以旧换新</div>
+              <div style="font-size:11px;color:#64748d;margin-top:3px;line-height:1.5;">用户进入「评估结果页」时，默认高亮并预选该商品；仅<strong>已上架且支持抵扣</strong>的商品可设为默认</div>
+            </div>
+            <div class="prod-default-summary-val">
+              <span id="ti-default-name" style="font-size:13px;font-weight:700;color:#533afd;">2代AI语音智能款</span>
+              <span id="ti-default-id" class="admin-badge" style="background:#eef2ff;color:#533afd;">TI-001</span>
+            </div>
+          </div>
+          <div class="prod-table-wrap">
+          <table class="admin-tbl" id="prod-tbl-trade-in">
+            <tr>
+              <th style="width:88px;">展示顺序</th><th style="width:96px;">默认商品</th><th>商品ID</th><th>商品名称</th><th style="width:72px;">换新价</th><th style="width:88px;">旧机抵扣</th><th style="width:72px;">状态</th><th>关联权益</th><th style="width:120px;">操作</th>
+            </tr>
+            <tr data-on-shelf="1" data-discount="1" data-prod-id="TI-001">
+<td class="prod-sort-display" style="text-align:center;"><span class="admin-badge prod-sort-badge" style="background:#eef2ff;color:#533afd;">第 1 位</span></td>
+              <td class="prod-default-display" style="text-align:center;"><span class="admin-badge prod-default-badge is-default-badge" style="background:#f0fdf4;color:#15803d;">★ 默认</span></td>
+              <td style="color:#94a3b8;font-size:11px;">TI-001</td>
+              <td><b>2代AI语音智能款</b><br/><span style="font-size:11px;color:#94a3b8;">OBU·后贴式</span></td>
+              <td>¥99</td>
+              <td><span class="admin-badge" style="background:#f0fdf4;color:#22c55e;">支持</span></td>
+              <td><span class="admin-badge" style="background:#f0fdf4;color:#22c55e;">上架</span></td>
+              <td>
+                <span style="font-size:11px;background:#fff7e6;color:#d46b08;padding:2px 6px;border-radius:4px;margin-right:4px;">质保3年</span>
+                <span style="font-size:11px;background:#f0fdf4;color:#22c55e;padding:2px 6px;border-radius:4px;">高速95折</span>
+              </td>
+              <td>
+                <button class="btn btn-ghost btn-sm" onclick="showProductDetail('TI-001')">配置</button>
+                <button class="btn btn-ghost btn-sm" style="color:#ff4d4f;" onclick="alert('下架确认（原型）')">下架</button>
+              </td>
+            </tr>
+            <tr data-on-shelf="1" data-discount="1" data-prod-id="TI-002">
+<td class="prod-sort-display" style="text-align:center;"><span class="admin-badge prod-sort-badge" style="background:#eef2ff;color:#533afd;">第 2 位</span></td>
+              <td class="prod-default-display" style="text-align:center;"><span style="color:#94a3b8;font-size:11px;">—</span></td>
+              <td style="color:#94a3b8;font-size:11px;">TI-002</td>
+              <td><b>互动4.0屏显款</b><br/><span style="font-size:11px;color:#94a3b8;">OBU·屏显</span></td>
+              <td>¥128</td>
+              <td><span class="admin-badge" style="background:#f0fdf4;color:#22c55e;">支持</span></td>
+              <td><span class="admin-badge" style="background:#f0fdf4;color:#22c55e;">上架</span></td>
+              <td>
+                <span style="font-size:11px;background:#fff7e6;color:#d46b08;padding:2px 6px;border-radius:4px;margin-right:4px;">质保3年</span>
+                <span style="font-size:11px;background:#f0fdf4;color:#22c55e;padding:2px 6px;border-radius:4px;">高速95折</span>
+              </td>
+              <td>
+                <button class="btn btn-ghost btn-sm" onclick="showProductDetail('TI-002')">配置</button>
+                <button class="btn btn-ghost btn-sm" style="color:#ff4d4f;" onclick="alert('下架确认（原型）')">下架</button>
+              </td>
+            </tr>
+            <tr data-on-shelf="1" data-discount="1" data-prod-id="TI-003">
+<td class="prod-sort-display" style="text-align:center;"><span class="admin-badge prod-sort-badge" style="background:#eef2ff;color:#533afd;">第 3 位</span></td>
+              <td class="prod-default-display" style="text-align:center;"><span style="color:#94a3b8;font-size:11px;">—</span></td>
+              <td style="color:#94a3b8;font-size:11px;">TI-003</td>
+              <td><b>4代AI磁吸隐藏款</b><br/><span style="font-size:11px;color:#94a3b8;">OBU·隐藏式</span></td>
+              <td>¥128</td>
+              <td><span class="admin-badge" style="background:#f0fdf4;color:#22c55e;">支持</span></td>
+              <td><span class="admin-badge" style="background:#f0fdf4;color:#22c55e;">上架</span></td>
+              <td>
+                <span style="font-size:11px;background:#fff7e6;color:#d46b08;padding:2px 6px;border-radius:4px;margin-right:4px;">质保3年</span>
+                <span style="font-size:11px;background:#f0fdf4;color:#22c55e;padding:2px 6px;border-radius:4px;">高速95折</span>
+              </td>
+              <td>
+                <button class="btn btn-ghost btn-sm" onclick="showProductDetail('TI-003')">配置</button>
+                <button class="btn btn-ghost btn-sm" style="color:#ff4d4f;" onclick="alert('下架确认（原型）')">下架</button>
+              </td>
+            </tr>
+            <tr style="background:#fafafa;" data-on-shelf="0" data-discount="0" data-prod-id="TI-004">
+<td class="prod-sort-display" style="text-align:center;"><span style="color:#94a3b8;font-size:11px;">—</span></td>
+              <td class="prod-default-display" style="text-align:center;"><span style="color:#94a3b8;font-size:11px;">—</span></td>
+              <td style="color:#94a3b8;font-size:11px;">TI-004</td>
+              <td><b>3代隐藏AI语音款</b><br/><span style="font-size:11px;color:#94a3b8;">OBU·隐藏式</span></td>
+              <td>¥109</td>
+              <td><span class="admin-badge" style="background:#fff2f0;color:#ff4d4f;">不支持</span></td>
+              <td><span class="admin-badge" style="background:#fff2f0;color:#ff4d4f;">已下架</span></td>
+              <td><span style="font-size:11px;color:#94a3b8;">—</span></td>
+              <td>
+                <button class="btn btn-ghost btn-sm" onclick="showProductDetail('TI-004')">配置</button>
+                <button class="btn btn-ghost btn-sm" style="color:#16a34a;" onclick="alert('上架确认（原型）')">上架</button>
+              </td>
+            </tr>
+          </table>
+          </div>
+          <div style="margin-top:10px;font-size:11px;color:#94a3b8;">展示顺序与默认商品请在「配置」弹窗中设置；列表仅作只读预览</div>
+        </div>
+
+      <!-- ── 首页图片配置 ── -->
+      <div class="panel-card" style="margin-bottom:16px;padding:12px 14px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <div>
+            <div style="font-size:12px;font-weight:700;color:#0d253d;">🖼️ 首页图片</div>
+            <div style="font-size:10px;color:#94a3b8;margin-top:2px;">跟随上方 Tab 切换 · 支持上传或链接</div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="saveAdminImgs()">保存</button>
+        </div>
+        <!-- 新购首页图（跟随 Tab） -->
+        <div id="img-section-np" style="display:flex;align-items:center;gap:10px;">
+          <div style="width:88px;height:56px;border:1.5px dashed #c7d2fe;border-radius:8px;background:#f8f9ff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;overflow:hidden;position:relative;" onclick="document.getElementById('img-upload-np').click()" title="点击上传">
+            <img id="img-preview-np" src="" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:6px;display:none;"/>
+            <span id="img-placeholder-np" style="font-size:18px;line-height:1;">🖼️</span>
+            <input type="file" id="img-upload-np" accept="image/*" style="display:none;" onchange="previewAdminImg(this,'np')"/>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:11px;font-weight:600;color:#0d253d;margin-bottom:4px;">新购首页图</div>
+            <input type="text" id="img-url-np" placeholder="粘贴图片链接 https://..." style="width:100%;border:1px solid #e3e8ee;border-radius:6px;padding:5px 8px;font-size:11px;" oninput="applyAdminImgUrl(this.value,'np')"/>
+          </div>
+        </div>
+
+        <!-- 以旧换新首页图（跟随 Tab） -->
+        <div id="img-section-ti" style="display:none;align-items:center;gap:10px;">
+          <div style="width:88px;height:56px;border:1.5px dashed #bbf7d0;border-radius:8px;background:#f0fdf4;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;overflow:hidden;" onclick="document.getElementById('img-upload-ti').click()" title="点击上传">
+            <img id="img-preview-ti" src="" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:6px;display:none;"/>
+            <span id="img-placeholder-ti" style="font-size:18px;line-height:1;">🖼️</span>
+            <input type="file" id="img-upload-ti" accept="image/*" style="display:none;" onchange="previewAdminImg(this,'ti')"/>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:11px;font-weight:600;color:#0d253d;margin-bottom:4px;">以旧换新首页图</div>
+            <input type="text" id="img-url-ti" placeholder="粘贴图片链接 https://..." style="width:100%;border:1px solid #e3e8ee;border-radius:6px;padding:5px 8px;font-size:11px;" oninput="applyAdminImgUrl(this.value,'ti')"/>
+          </div>
+        </div>
+      </div>
+
+      </div>
+
+      <!-- ── 旧设备折扣配置 ── -->
+      <div id="adm-panel-discount" class="admin-panel">
+        <div class="admin-topbar">
+          <h1>旧设备折扣配置</h1>
+          <button class="btn btn-primary btn-sm" onclick="alert('保存配置（原型）')">保存全部</button>
+        </div>
+
+        <!-- 全局默认折扣 -->
+        <div class="panel-card" style="margin-bottom:20px;">
+          <div style="font-size:13px;font-weight:700;color:#0d253d;margin-bottom:4px;">全局默认折扣</div>
+          <div style="font-size:12px;color:#64748d;margin-bottom:14px;">未单独配置折扣的旧设备，统一按此金额抵扣。</div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <label style="font-size:12px;color:#64748d;white-space:nowrap;">默认抵扣金额</label>
+            <div style="display:flex;align-items:center;border:1.5px solid #533afd;border-radius:8px;overflow:hidden;width:140px;">
+              <span style="padding:7px 10px;background:#f6f9fc;font-size:13px;color:#64748d;">¥</span>
+              <input type="number" value="40" min="0" style="flex:1;border:none;outline:none;padding:7px 8px;font-size:14px;font-weight:700;color:#0d253d;width:60px;"/>
+              <span style="padding:7px 10px;font-size:12px;color:#64748d;background:#f6f9fc;">元</span>
+            </div>
+            <span style="font-size:11px;color:#94a3b8;">修改后对新生成的估价单生效；已下单不受影响</span>
+          </div>
+        </div>
+
+        <!-- 各设备单独配置 -->
+        <div class="panel-card" style="padding:0;overflow:hidden;">
+          <div style="padding:14px 16px 10px;border-bottom:1px solid #f0f4f8;display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#0d253d;">按旧设备型号单独设置</div>
+              <div style="font-size:11px;color:#64748d;margin-top:2px;">留空则使用全局默认折扣；支持设为 0（即不享受折扣）</div>
+            </div>
+            <button class="btn btn-ghost btn-sm" onclick="addDiscountRow()">+ 新增型号</button>
+          </div>
+          <table class="admin-tbl">
+            <tr>
+              <th>旧设备型号</th>
+              <th>品牌 / 代次</th>
+              <th style="width:160px;">单独折扣（元）</th>
+              <th style="width:100px;">状态</th>
+              <th style="width:80px;">操作</th>
+            </tr>
+            <tr>
+              <td><b>OBU-A1 语音智能款</b><br/><span style="font-size:11px;color:#94a3b8;">2代</span></td>
+              <td>小万 / 第2代</td>
+              <td>
+                <div style="display:flex;align-items:center;gap:4px;">
+                  <span style="font-size:11px;color:#64748d;">¥</span>
+                  <input type="number" placeholder="默认（40）" style="border:1px solid #e3e8ee;border-radius:6px;padding:4px 8px;font-size:12px;width:90px;"/>
+                </div>
+              </td>
+              <td><span class="admin-badge" style="background:#f0fdf4;color:#22c55e;">启用</span></td>
+              <td><button class="btn btn-ghost btn-sm" style="color:#ff4d4f;">移除</button></td>
+            </tr>
+            <tr>
+              <td><b>OBU-B2 屏显款</b><br/><span style="font-size:11px;color:#94a3b8;">3代</span></td>
+              <td>小万 / 第3代</td>
+              <td>
+                <div style="display:flex;align-items:center;gap:4px;">
+                  <span style="font-size:11px;color:#64748d;">¥</span>
+                  <input type="number" value="35" style="border:1.5px solid #533afd;border-radius:6px;padding:4px 8px;font-size:12px;width:90px;color:#533afd;font-weight:700;"/>
+                </div>
+              </td>
+              <td><span class="admin-badge" style="background:#f0fdf4;color:#22c55e;">启用</span></td>
+              <td><button class="btn btn-ghost btn-sm" style="color:#ff4d4f;">移除</button></td>
+            </tr>
+            <tr>
+              <td><b>OBU-C3 磁吸隐藏款</b><br/><span style="font-size:11px;color:#94a3b8;">4代</span></td>
+              <td>小万 / 第4代</td>
+              <td>
+                <div style="display:flex;align-items:center;gap:4px;">
+                  <span style="font-size:11px;color:#64748d;">¥</span>
+                  <input type="number" value="50" style="border:1.5px solid #533afd;border-radius:6px;padding:4px 8px;font-size:12px;width:90px;color:#533afd;font-weight:700;"/>
+                </div>
+              </td>
+              <td><span class="admin-badge" style="background:#f0fdf4;color:#22c55e;">启用</span></td>
+              <td><button class="btn btn-ghost btn-sm" style="color:#ff4d4f;">移除</button></td>
+            </tr>
+            <tr style="background:#fafafa;">
+              <td><b>OBU-X1 第三方通用款</b><br/><span style="font-size:11px;color:#94a3b8;">其他品牌</span></td>
+              <td>第三方</td>
+              <td>
+                <div style="display:flex;align-items:center;gap:4px;">
+                  <span style="font-size:11px;color:#64748d;">¥</span>
+                  <input type="number" value="0" style="border:1px solid #e3e8ee;border-radius:6px;padding:4px 8px;font-size:12px;width:90px;color:#ff4d4f;font-weight:700;"/>
+                </div>
+              </td>
+              <td><span class="admin-badge" style="background:#f0fdf4;color:#22c55e;">启用</span></td>
+              <td><button class="btn btn-ghost btn-sm" style="color:#ff4d4f;">移除</button></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="info-box" style="margin-top:14px;">
+          📌 折扣金额在用户估价时自动匹配：系统先查旧设备型号是否有单独配置，有则使用单独折扣；无则降级使用全局默认金额。设为 0 表示该型号不参与折扣，用户估价时提示"该设备不支持抵扣"。
+        </div>
+      </div>
+
+
+
+      <!-- 转化数据看板 -->
+      <div id="adm-panel-analytics" class="admin-panel">
+        <div class="admin-topbar">
+          <h1>转化数据看板</h1>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+            <select id="analytics-range" onchange="switchAnalyticsBiz(document.querySelector('.analytics-biz-tab.active')?.dataset?.biz||'buy')" style="border:1px solid #d9d9d9;border-radius:6px;padding:6px 10px;font-size:12px;">
+              <option>今日</option>
+              <option selected>近7天</option>
+              <option>近30天</option>
+              <option>自定义</option>
+            </select>
+            <button class="btn btn-ghost btn-sm" onclick="alert('导出报表（原型）')">导出</button>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:0;border-bottom:2px solid #e3e8ee;margin-bottom:16px;">
+          <button type="button" class="analytics-biz-tab active" data-biz="buy" onclick="switchAnalyticsBiz('buy',this)"
+            style="padding:8px 20px;font-size:13px;font-weight:600;border:none;background:none;cursor:pointer;color:#533afd;border-bottom:2px solid #533afd;margin-bottom:-2px;">🛒 新购（含投流）</button>
+          <button type="button" class="analytics-biz-tab" data-biz="tradein" onclick="switchAnalyticsBiz('tradein',this)"
+            style="padding:8px 20px;font-size:13px;font-weight:600;border:none;background:none;cursor:pointer;color:#94a3b8;border-bottom:2px solid transparent;margin-bottom:-2px;">🔄 以旧换新</button>
+        </div>
+
+        <div id="analytics-buy">
+          <div class="info-box" style="margin-bottom:14px;">📌 <strong>新购链路含站外投流</strong>：微信搜一搜 / 朋友圈广告 → 办理首页落地 → SKU → 提交订单 → 支付 → 激活。核心关注：<strong>广告落地页 → 下单率 9.0%</strong>、<strong>广告落地页 → 支付转化率 4.0%</strong>（原型目标值）。</div>
+
+          <!-- KPI 卡片 -->
+          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px;">
+            <div class="panel-card" style="padding:14px;text-align:center;"><div style="font-size:11px;color:#64748d;">广告花费</div><div style="font-size:22px;font-weight:800;color:#0d253d;margin:6px 0;">¥8.6万</div><div style="font-size:10px;color:#94a3b8;">近7天</div></div>
+            <div class="panel-card" style="padding:14px;text-align:center;"><div style="font-size:11px;color:#64748d;">落地 UV</div><div style="font-size:22px;font-weight:800;color:#533afd;margin:6px 0;">9,820</div><div style="font-size:10px;color:#16a34a;">↑ 12.3%</div></div>
+            <div class="panel-card" style="padding:14px;text-align:center;"><div style="font-size:11px;color:#64748d;">下单率</div><div style="font-size:22px;font-weight:800;color:#533afd;margin:6px 0;">9.0%</div><div style="font-size:10px;color:#64748d;">落地→提交订单</div></div>
+            <div class="panel-card" style="padding:14px;text-align:center;"><div style="font-size:11px;color:#64748d;">支付转化率</div><div style="font-size:22px;font-weight:800;color:#16a34a;margin:6px 0;">4.0%</div><div style="font-size:10px;color:#64748d;">落地→支付成功</div></div>
+            <div class="panel-card" style="padding:14px;text-align:center;"><div style="font-size:11px;color:#64748d;">获客成本 CPA</div><div style="font-size:22px;font-weight:800;color:#d46b08;margin:6px 0;">¥220</div><div style="font-size:10px;color:#64748d;">花费/支付单</div></div>
+          </div>
+
+          <!-- 投流渠道 -->
+          <div class="panel-card" style="padding:16px;margin-bottom:14px;">
+            <div style="font-size:13px;font-weight:800;margin-bottom:10px;">投流渠道拆分</div>
+            <table class="admin-tbl">
+              <tr><th>渠道</th><th>花费</th><th>曝光</th><th>点击</th><th>CTR</th><th>落地 UV</th><th>支付单</th><th>支付转化率</th><th>CPA</th></tr>
+              <tr>
+                <td><b>微信搜一搜</b></td><td>¥52,800</td><td>320,000</td><td>9,600</td><td>3.0%</td><td>7,540</td><td>312</td><td><span class="tag t-green">4.1%</span></td><td>¥169</td>
+              </tr>
+              <tr>
+                <td><b>微信朋友圈</b></td><td>¥28,600</td><td>180,000</td><td>2,900</td><td>1.6%</td><td>2,280</td><td>80</td><td><span class="tag t-blue">3.5%</span></td><td>¥358</td>
+              </tr>
+              <tr style="background:#fafafa;">
+                <td><b>自然 / 其他</b></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
+              </tr>
+            </table>
+          </div>
+
+          <!-- 转化漏斗 -->
+          <div class="panel-card" style="padding:16px;margin-bottom:14px;">
+            <div style="font-size:13px;font-weight:800;margin-bottom:12px;">全链路转化漏斗 · 新购</div>
+            <div id="funnel-buy"></div>
+          </div>
+
+          <!-- 履约漏斗 -->
+          <div class="panel-card" style="padding:16px;">
+            <div style="font-size:13px;font-weight:800;margin-bottom:10px;">支付后履约转化（近7天支付用户）</div>
+            <table class="admin-tbl">
+              <tr><th>环节</th><th>人数</th><th>转化率</th><th>说明</th></tr>
+              <tr><td>支付成功</td><td>392</td><td>100%</td><td>基准</td></tr>
+              <tr><td>提交资料</td><td>348</td><td>88.8%</td><td>收货前可提前完成</td></tr>
+              <tr><td>签约完成</td><td>331</td><td>84.4%</td><td>审核通过即可签约</td></tr>
+              <tr><td>确认收货</td><td>385</td><td>98.2%</td><td>物流签收</td></tr>
+              <tr><td>激活完成</td><td>353</td><td><span class="tag t-green">90.1%</span></td><td>目标 ≥90%</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <div id="analytics-tradein" style="display:none;">
+          <div class="info-box" style="margin-bottom:14px;">📌 <strong>以旧换新为站内触达为主</strong>（短信/公众号/订阅消息/站内 Banner），无站外投流。核心关注：<strong>升级首页 → 下单率 10.4%</strong>、<strong>升级首页 → 支付转化率 4.6%</strong>、<strong>已过期设备换新率 3%</strong>。</div>
+
+          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px;">
+            <div class="panel-card" style="padding:14px;text-align:center;"><div style="font-size:11px;color:#64748d;">升级首页 UV</div><div style="font-size:22px;font-weight:800;color:#d46b08;margin:6px 0;">28,400</div><div style="font-size:10px;color:#16a34a;">↑ 8.1%</div></div>
+            <div class="panel-card" style="padding:14px;text-align:center;"><div style="font-size:11px;color:#64748d;">估价完成率</div><div style="font-size:22px;font-weight:800;color:#d46b08;margin:6px 0;">64.1%</div><div style="font-size:10px;color:#64748d;">首页→评估结果</div></div>
+            <div class="panel-card" style="padding:14px;text-align:center;"><div style="font-size:11px;color:#64748d;">下单率</div><div style="font-size:22px;font-weight:800;color:#d46b08;margin:6px 0;">10.4%</div><div style="font-size:10px;color:#64748d;">首页→提交订单</div></div>
+            <div class="panel-card" style="padding:14px;text-align:center;"><div style="font-size:11px;color:#64748d;">支付转化率</div><div style="font-size:22px;font-weight:800;color:#16a34a;margin:6px 0;">4.6%</div><div style="font-size:10px;color:#64748d;">首页→支付成功</div></div>
+            <div class="panel-card" style="padding:14px;text-align:center;"><div style="font-size:11px;color:#64748d;">过期设备换新率</div><div style="font-size:22px;font-weight:800;color:#531dab;margin:6px 0;">3.0%</div><div style="font-size:10px;color:#64748d;">已过期用户→完成换新</div></div>
+          </div>
+
+          <div class="panel-card" style="padding:16px;margin-bottom:14px;">
+            <div style="font-size:13px;font-weight:800;margin-bottom:10px;">触达渠道贡献（支付单）</div>
+            <table class="admin-tbl">
+              <tr><th>渠道</th><th>触达 UV</th><th>升级首页 UV</th><th>支付单</th><th>支付转化率</th></tr>
+              <tr><td><b>短信</b></td><td>12,600</td><td>4,820</td><td>186</td><td>3.9%</td></tr>
+              <tr><td><b>公众号 / 订阅消息</b></td><td>9,400</td><td>3,650</td><td>142</td><td>3.9%</td></tr>
+              <tr><td><b>站内 Banner / 弹窗</b></td><td>18,200</td><td>11,300</td><td>612</td><td><span class="tag t-green">5.4%</span></td></tr>
+              <tr><td><b>首页状态条点击</b></td><td>6,800</td><td>—</td><td>98</td><td>—</td></tr>
+            </table>
+          </div>
+
+          <div class="panel-card" style="padding:16px;margin-bottom:14px;">
+            <div style="font-size:13px;font-weight:800;margin-bottom:12px;">全链路转化漏斗 · 以旧换新</div>
+            <div id="funnel-tradein"></div>
+          </div>
+
+          <div class="panel-card" style="padding:16px;">
+            <div style="font-size:13px;font-weight:800;margin-bottom:10px;">支付后履约转化（近7天支付用户）</div>
+            <table class="admin-tbl">
+              <tr><th>环节</th><th>人数</th><th>转化率</th><th>说明</th></tr>
+              <tr><td>支付成功</td><td>1,306</td><td>100%</td><td>基准</td></tr>
+              <tr><td>提交资料</td><td>1,148</td><td>87.9%</td><td>收货前可提前</td></tr>
+              <tr><td>确认收货</td><td>1,281</td><td>98.1%</td><td>物流签收</td></tr>
+              <tr><td>激活完成</td><td>1,175</td><td><span class="tag t-green">89.9%</span></td><td>激活后旧设备注销</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
 
     </main>
   </div>
@@ -4319,12 +4864,18 @@ input[style*="border:none"]{
     <details class="req-block open">
       <summary>🛠 运营后台规则 <span class="hint">page-ops-admin</span></summary>
       <div class="req-content">
-        <div class="req-rule-item"><span class="rk">模块划分</span><span class="rv">左侧导航：新购订单管理 / 以旧换新订单 / 活动配置（无数据总览）</span></div>
+        <div class="req-rule-item"><span class="rk">模块划分</span><span class="rv">左侧导航：新购订单管理 / 以旧换新订单 / 商品配置 / 转化数据看板 / 旧设备折扣</span></div>
+        <div class="req-rule-item"><span class="rk">旧设备折扣</span><span class="rv">独立配置模块，与商品无关；支持设置全局默认折扣（a元）和按旧设备型号单独设置折扣；匹配优先级：单独配置 &gt; 全局默认；折扣设为0表示该型号不参与抵扣；修改仅对新估价单生效，已下单不受影响</span></div>
+        <div class="req-rule-item"><span class="rk">商品配置</span><span class="rv">支持新增/上架/下架商品；分「新购 / 以旧换新」Tab 管理；每个商品可配置售价、是否支持抵扣、关联权益；具体抵扣金额在「旧设备折扣」模块单独管理</span></div>
+        <div class="req-rule-item"><span class="rk">展示顺序</span><span class="rv">展示顺序与默认商品在商品<strong>配置弹窗</strong>中设置；列表只读展示当前值；序号 1 为 C 端最靠前；已下架/不可售商品不参与排序且不可设为默认</span></div>
+        <div class="req-rule-item"><span class="rk">默认商品</span><span class="rv">在配置弹窗「C端展示设置」中勾选；每个业务线仅 1 个；仅<strong>已上架</strong>（换新需支持抵扣）可设；列表只读展示</span></div>
+        <div class="req-rule-item"><span class="rk">权益字段</span><span class="rv">延保：质保时长 + 是否可续保；道路救援：服务时长 + 年次数上限；违章查询：查询次数；里程积分 / 高速折扣券：开关控制（后续扩展）</span></div>
         <div class="req-rule-item"><span class="rk">发行地区</span><span class="rv">新购订单：仅 <strong>北京 / 重庆 / 江苏</strong> 发行；换新订单：<strong>仅北京发行</strong>。列表建议展示「发行地区」字段，与 C 端准入规则一致</span></div>
         <div class="req-rule-item"><span class="rk">新购订单</span><span class="rv">列表字段：订单号、用户、车牌、设备、实付、状态、开票、时间；状态与 C 端 page-pending 一致；支持筛选与导出</span></div>
         <div class="req-rule-item"><span class="rk">换新订单</span><span class="rv">额外展示旧机估价抵扣金额、估价车牌；无旧机寄回状态；异常含「待激活超14天」；订单均为北京发行</span></div>
         <div class="req-rule-item"><span class="rk">订单详情</span><span class="rv">点击详情进入 page-ops-order-detail，可查看完整订单信息、物流、开票记录，运营可备注/人工介入</span></div>
-        <div class="req-rule-item"><span class="rk">权限</span><span class="rv">运营员查看+导出；客服备注+人工介入；超管含活动配置</span></div>
+        <div class="req-rule-item"><span class="rk">转化数据看板</span><span class="rv">分「新购（含投流）」「以旧换新」Tab；展示 KPI 卡片、渠道拆分、全链路漏斗、支付后履约转化；新购关注落地→下单率/支付转化率/CPA；换新关注升级首页→下单率/支付转化率/过期设备换新率；数据 Mock，上线对接埋点</span></div>
+        <div class="req-rule-item"><span class="rk">权限</span><span class="rv">运营员查看+导出；客服备注+人工介入；超管含活动配置与数据看板</span></div>
       </div>
     </details>
   </div>
@@ -4398,13 +4949,149 @@ input[style*="border:none"]{
 <script>
 // ── 页面切换 ──
 // ── 运营后台 ──
+
+function switchAnalyticsBiz(biz, btn) {
+  var buyEl = document.getElementById('analytics-buy');
+  var tiEl = document.getElementById('analytics-tradein');
+  if (buyEl) buyEl.style.display = biz === 'buy' ? '' : 'none';
+  if (tiEl) tiEl.style.display = biz === 'tradein' ? '' : 'none';
+  document.querySelectorAll('.analytics-biz-tab').forEach(function(t) {
+    var on = t.getAttribute('data-biz') === biz;
+    t.classList.toggle('active', on);
+    t.style.color = on ? '#533afd' : '#94a3b8';
+    t.style.borderBottomColor = on ? '#533afd' : 'transparent';
+  });
+  if (btn) btn.classList.add('active');
+  renderAnalyticsFunnels(biz);
+}
+function renderAnalyticsFunnels(biz) {
+  var funnels = {
+    buy: [
+      { label: '广告曝光', uv: 500000, rate: null },
+      { label: '广告点击', uv: 12500, rate: 'CTR 2.5%' },
+      { label: '落地页 UV（办理首页）', uv: 9820, rate: '点击→落地 78.6%' },
+      { label: 'SKU 页 UV', uv: 6100, rate: '66.2%' },
+      { label: '提交订单', uv: 884, rate: '下单率 9.0%' },
+      { label: '支付成功', uv: 393, rate: '支付转化率 4.0%' },
+      { label: '激活完成', uv: 354, rate: '90.1%' }
+    ],
+    tradein: [
+      { label: '升级首页 UV', uv: 28400, rate: null },
+      { label: '点击「旧设备估价」', uv: 19600, rate: '69.0%' },
+      { label: '评估结果页 UV', uv: 18200, rate: '92.9%' },
+      { label: '提交订单', uv: 2956, rate: '下单率 10.4%' },
+      { label: '支付成功', uv: 1307, rate: '支付转化率 4.6%' },
+      { label: '激活完成', uv: 1175, rate: '89.9%' }
+    ]
+  };
+  var steps = funnels[biz] || [];
+  var maxUv = steps.length ? steps[0].uv : 1;
+  var host = document.getElementById('funnel-' + biz);
+  if (!host) return;
+  host.innerHTML = steps.map(function(s, i) {
+    var pct = Math.max(4, Math.round(s.uv / maxUv * 100));
+    var color = biz === 'buy' ? '#533afd' : '#d46b08';
+    return '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">'
+      + '<div style="width:148px;font-size:11px;color:#64748d;text-align:right;flex-shrink:0;">' + s.label + '</div>'
+      + '<div style="flex:1;background:#f1f5f9;border-radius:6px;height:28px;overflow:hidden;position:relative;">'
+      + '<div style="width:' + pct + '%;background:' + color + ';height:100%;border-radius:6px;opacity:' + (0.45 + (steps.length - i) * 0.08) + ';"></div>'
+      + '<span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:700;color:#0d253d;">' + s.uv.toLocaleString() + '</span>'
+      + '</div>'
+      + '<div style="width:110px;font-size:11px;color:#16a34a;font-weight:600;flex-shrink:0;">' + (s.rate || '—') + '</div>'
+      + '</div>';
+  }).join('');
+}
+
 function switchAdminPanel(panel) {
-  ['buy','tradein'].forEach(function(p) {
+  ['buy','tradein','product','discount','analytics'].forEach(function(p) {
     var el = document.getElementById('adm-panel-' + p);
     var nav = document.getElementById('adm-nav-' + p);
     if (el) el.classList.toggle('active', p === panel);
     if (nav) nav.classList.toggle('active', p === panel);
   });
+  if (panel === 'analytics') {
+    var biz = (document.querySelector('.analytics-biz-tab.active') || {}).dataset;
+    renderAnalyticsFunnels(biz && biz.biz ? biz.biz : 'buy');
+  }
+}
+function showProductDetail(prodId) {
+  var isNew = prodId === 'new';
+  pmEditingProdId = isNew ? null : prodId;
+  var tableId = getTableIdForTab();
+  var row = isNew ? null : getProductRowById(prodId, tableId);
+  var names = {'NP-001':'2026款AI语音ETC','NP-002':'AI语音超大屏ETC','NP-003':'4代AI磁吸隐藏款','TI-001':'2代AI语音智能款','TI-002':'互动4.0屏显款','TI-003':'4代AI磁吸隐藏款','TI-004':'3代隐藏AI语音款'};
+  var sub = document.getElementById('pm-subtitle');
+  var nm = document.getElementById('pm-name');
+  var priceInput = document.getElementById('pm-price');
+  var statusSel = document.getElementById('pm-status');
+  var sortInput = document.getElementById('pm-sort-order');
+  var defaultCb = document.getElementById('pm-is-default');
+  if (sub) sub.textContent = isNew ? '新商品' : (names[prodId] || prodId);
+  if (nm) nm.value = isNew ? '' : (row && row.querySelector('b') ? row.querySelector('b').textContent : (names[prodId] || ''));
+  if (row && priceInput) {
+    var tds = row.querySelectorAll('td');
+    if (tds[4]) priceInput.value = tds[4].textContent.replace(/[¥\s]/g, '');
+    if (statusSel) statusSel.value = row.getAttribute('data-on-shelf') === '1' ? '上架' : '下架';
+    var disc = row.getAttribute('data-discount');
+    if (disc !== null && disc !== undefined) {
+      var dr = document.querySelector('input[name="pm-discount"][value="' + disc + '"]');
+      if (dr) dr.checked = true;
+    }
+  } else if (isNew) {
+    if (priceInput) priceInput.value = '';
+    if (statusSel) statusSel.value = '上架';
+    var dr1 = document.querySelector('input[name="pm-discount"][value="1"]');
+    if (dr1) dr1.checked = true;
+  }
+  var table = document.getElementById(tableId);
+  var sortable = table ? getSortableProductRows(table) : [];
+  if (sortInput) {
+    if (isNew) sortInput.value = String(sortable.length + 1);
+    else if (row) {
+      var idx = sortable.indexOf(row);
+      sortInput.value = idx >= 0 ? String(idx + 1) : '';
+    }
+  }
+  if (defaultCb) {
+    defaultCb.checked = !!(row && row.querySelector('.prod-default-display .is-default-badge'));
+    if (isNew) defaultCb.checked = false;
+  }
+  if (typeof setPmBizType === 'function') setPmBizType(currentProductTab || 'new-purchase');
+  updatePmDisplayFieldsState();
+  var saveBtn = document.querySelector('#product-modal .btn-primary');
+  if (saveBtn) saveBtn.textContent = isNew ? '创建商品' : '保存配置';
+  document.getElementById('product-modal-overlay').style.display = 'block';
+  document.getElementById('product-modal').style.display = 'block';
+}
+function addDiscountRow() {
+  var tbody = document.querySelector('#adm-panel-discount table.admin-tbl');
+  if (!tbody) return;
+  var newRow = document.createElement('tr');
+  newRow.style.background = '#f0f9ff';
+  newRow.innerHTML = '<td><input type="text" placeholder="设备型号名称" style="border:1.5px solid #533afd;border-radius:6px;padding:4px 8px;font-size:12px;width:130px;"/><br/><input type="text" placeholder="代次说明" style="border:1px solid #e3e8ee;border-radius:4px;padding:2px 6px;font-size:11px;margin-top:4px;width:130px;"/></td>'
+    + '<td><input type="text" placeholder="品牌 / 代次" style="border:1px solid #e3e8ee;border-radius:6px;padding:4px 8px;font-size:12px;width:100px;"/></td>'
+    + '<td><div style="display:flex;align-items:center;gap:4px;"><span style="font-size:11px;color:#64748d;">¥</span><input type="number" placeholder="留空用默认" style="border:1.5px solid #533afd;border-radius:6px;padding:4px 8px;font-size:12px;width:90px;"/></div></td>'
+    + '<td><span class="admin-badge" style="background:#f0fdf4;color:#22c55e;">启用</span></td>'
+    + '<td><button class="btn btn-primary btn-sm" onclick="confirmAddRow(this)" style="margin-right:4px;">确认</button><button class="btn btn-ghost btn-sm" style="color:#ff4d4f;" onclick="this.closest(\'tr\').remove()">取消</button></td>';
+  tbody.appendChild(newRow);
+  newRow.scrollIntoView({behavior:'smooth', block:'nearest'});
+  newRow.querySelector('input').focus();
+}
+function confirmAddRow(btn) {
+  var row = btn.closest('tr');
+  var inputs = row.querySelectorAll('input');
+  var name = inputs[0].value.trim();
+  if (!name) { inputs[0].style.borderColor='#ff4d4f'; inputs[0].focus(); return; }
+  var sub = inputs[1].value.trim();
+  var brand = inputs[2].value.trim() || '—';
+  var discount = inputs[3].value.trim();
+  row.style.background = '';
+  row.innerHTML = '<td><b>' + name + '</b>' + (sub ? '<br/><span style="font-size:11px;color:#94a3b8;">' + sub + '</span>' : '') + '</td>'
+    + '<td>' + brand + '</td>'
+    + '<td><div style="display:flex;align-items:center;gap:4px;"><span style="font-size:11px;color:#64748d;">¥</span>'
+    + '<input type="number" ' + (discount ? 'value="' + discount + '" style="border:1.5px solid #533afd;border-radius:6px;padding:4px 8px;font-size:12px;width:90px;color:#533afd;font-weight:700;"' : 'placeholder="默认（40）" style="border:1px solid #e3e8ee;border-radius:6px;padding:4px 8px;font-size:12px;width:90px;"') + '/></div></td>'
+    + '<td><span class="admin-badge" style="background:#f0fdf4;color:#22c55e;">启用</span></td>'
+    + '<td><button class="btn btn-ghost btn-sm" style="color:#ff4d4f;" onclick="this.closest(\'tr\').remove()">移除</button></td>';
 }
 function switchAdminChip(el, panelKey) {
   var parent = el.parentNode;
@@ -4511,6 +5198,10 @@ function goPage(id, btn) {
   if (id === 'page-pending') { var anyP = ['unpaid','warehouse','ship','transit','received','fin'].some(function(s){ var el=document.getElementById('pstate-'+s); return el && el.style.display !== 'none'; }); if (!anyP) switchPendingState('transit'); }
   // 进入资料核对页时重置到第1步
   if (id === 'page-docs') { switchDocsStep(1); }
+  if (id === 'page-valuation') { if (typeof refreshValuationHealth === 'function') refreshValuationHealth(); }
+  if (id === 'page-tradein-home') { if (typeof refreshTradeinNudge === 'function') refreshTradeinNudge(); }
+  if (id === 'page-ops-admin') { setTimeout(function(){ refreshProductSort('prod-tbl-new-purchase'); refreshProductSort('prod-tbl-trade-in'); renderAnalyticsFunnels && renderAnalyticsFunnels(document.querySelector('.analytics-biz-tab.active')?.dataset?.biz || 'buy'); }, 0); }
+  if (id === 'page-banner-spec') { setTimeout(function(){ renderBannerPreview && renderBannerPreview(); }, 0); }
   if (id !== 'page-valuation') hideSelectPlateModal();
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   if (btn) { btn.classList.add('active'); return; }
@@ -4732,14 +5423,41 @@ function showTradeinSheet() {
 
 var tradeinHasPlate = true;
 var tradeinSelectedSku = 1;
+function refreshTradeinNudge() {
+  var info = VALUATION_PLATES && VALUATION_PLATES[currentValuationPlate];
+  var days = info ? info.days : 506;
+  var nudge = document.getElementById('tradein-nudge');
+  var nudgeText = document.getElementById('tradein-nudge-text');
+  if (!nudge || !nudgeText) return;
+  if (days > 300) {
+    var msgs = [
+      '你的设备已用 ' + days + ' 天，性能持续下滑，现在换新最划算',
+      '已用 ' + days + ' 天，旧设备每多用一天都在掉价，赶紧来估估值',
+      '用了 ' + days + ' 天了，换代前抵扣最高，过期不候',
+      '旧设备已陪你走过 ' + days + ' 天，该换新了，估价立省最高 ¥60',
+    ];
+    nudgeText.textContent = msgs[Math.floor(Math.random() * msgs.length)];
+    nudge.style.display = 'flex';
+  } else {
+    nudge.style.display = 'none';
+  }
+}
+function refreshValuationHealth() {
+  var fault = Math.floor(Math.random() * 6) + 5;   // 5–10
+  var batt  = Math.floor(Math.random() * 11) + 5;  // 5–15
+  var fEl = document.getElementById('val-fault-rate');
+  var bEl = document.getElementById('val-battery');
+  if (fEl) fEl.textContent = fault + '%';
+  if (bEl) bEl.textContent = batt + '%';
+}
 function startTradeinValuation() {
   goPage('page-tradein-scanning', null);
-  setTimeout(function(){ goPage('page-valuation', null); }, 1500);
+  setTimeout(function(){ goPage('page-valuation', null); refreshValuationHealth(); }, 1500);
 }
 function confirmTradeinPlate() {
   tradeinHasPlate = true;
   goPage('page-tradein-scanning', null);
-  setTimeout(function(){ goPage('page-valuation', null); }, 1200);
+  setTimeout(function(){ goPage('page-valuation', null); refreshValuationHealth(); }, 1200);
 }
 function selectTradeinSku(n) {
   tradeinSelectedSku = n;
@@ -5142,16 +5860,19 @@ function selectValuationPlate(plate) {
   var info = VALUATION_PLATES[plate];
   if (!info) return;
   currentValuationPlate = plate;
-  var label = document.getElementById('val-plate-label');
-  var detail = document.getElementById('val-plate-info');
+  var label   = document.getElementById('val-plate-label');
+  var plateNo = document.getElementById('val-plate-no');
+  var daysEl  = document.getElementById('val-used-days');
   var priceEl = document.getElementById('val-price');
-  if (label) label.textContent = plate;
-  if (detail) detail.textContent = '已使用 ' + info.days + '天 · ' + info.type;
-  if (priceEl) priceEl.textContent = '-¥' + info.price;
+  if (label)   label.textContent = plate;
+  if (plateNo) plateNo.textContent = plate;
+  if (daysEl)  daysEl.textContent = info.days;
+  if (priceEl) priceEl.textContent = '−¥' + info.price;
   document.querySelectorAll('#page-valuation .val-deduct-line').forEach(function(el) {
     el.textContent = '旧设备估价 ¥' + info.price + '，已在每款新设备价格中直接抵扣';
   });
   selectTradeinSku(tradeinSelectedSku);
+  refreshValuationHealth();
   hideSelectPlateModal();
 }
 function confirmCancel() {
@@ -5278,7 +5999,7 @@ function confirmCancel() {
 ════════════════════════════════════════ -->
 <div class="page" id="page-banner-spec">
 <style>
-.bs-wrap{max-width:960px;margin:0 auto;padding:28px 24px 60px;}
+.bs-wrap{max-width:1280px;margin:0 auto;padding:28px 24px 60px;}
 .bs-h1{font-size:16px;font-weight:800;color:#1677ff;margin:28px 0 6px;padding-left:14px;border-left:4px solid #1677ff;}
 .bs-desc{font-size:12px;color:#666;line-height:1.8;margin-bottom:20px;background:#f0edff;border-radius:8px;padding:12px 16px;}
 .bs-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:32px;}
@@ -5295,16 +6016,41 @@ function confirmCancel() {
 .bs-s-sign{background:#fff0f6;color:#c41d7f;border:1px solid #ffadd2;}
 .bs-s-activate{background:#f0fdf4;color:#237804;border:1px solid #b7eb8f;}
 .bs-s-done{background:#f6f9fc;color:#aaa;border:1px solid #e0e0e0;}
-.bs-banner-preview{background:#1677ff;border-radius:10px;padding:11px 14px;margin:6px 0 4px;max-width:520px;position:relative;display:flex;align-items:center;gap:12px;}
+.bs-banner-preview{background:#0d0d0d;border-radius:12px;padding:14px 16px;margin:6px 0 4px;max-width:520px;position:relative;display:flex;align-items:center;gap:14px;}
+.bs-banner-preview.bs-pay{background:#d46b08;}
 .bs-banner-preview .bp-left{flex:1;min-width:0;}
-.bs-banner-preview .bp-right{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:6px;}
-.bs-banner-preview .view-order{font-size:10px;color:rgba(255,255,255,0.6);cursor:pointer;white-space:nowrap;}
-.bs-banner-preview .title{font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;}
-.bs-banner-preview .sub{font-size:11px;color:rgba(255,255,255,.75);margin-bottom:5px;}
-.bs-banner-preview .logistics{margin-bottom:0;}
-.bs-banner-preview .btn-action{background:#fff;border-radius:14px;padding:5px 14px;font-size:11px;font-weight:700;white-space:nowrap;cursor:pointer;}
+.bs-banner-preview .bp-right{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:8px;}
+.bs-banner-preview .view-order{font-size:12px;color:rgba(255,255,255,0.85);cursor:pointer;white-space:nowrap;}
+.bs-banner-preview .title{font-size:16px;font-weight:700;color:#fff;margin-bottom:8px;line-height:1.3;}
+.bs-banner-preview .sub{font-size:13px;color:rgba(255,255,255,.88);margin:0;line-height:1.45;padding:0;border:none;}
+.bs-banner-preview .logistics-text{margin-top:10px;font-size:12px;color:rgba(255,255,255,.55);line-height:1.3;}
+.bs-banner-preview .btn-action{background:#fff;border-radius:20px;padding:8px 18px;font-size:13px;font-weight:700;color:#0d0d0d;white-space:nowrap;cursor:pointer;}
+.bs-banner-preview.bs-pay .btn-action{color:#d46b08;}
 .bs-rule{font-size:11px;color:#64748d;margin-top:3px;}
 .bs-trigger{font-size:11px;color:#555;}
+.bs-matrix-cell{font-size:11px;line-height:1.5;min-width:172px;white-space:normal;word-break:break-word;vertical-align:top;}
+.bs-matrix-cell .mc-block{border-radius:6px;padding:6px 8px;margin-bottom:6px;}
+.bs-matrix-cell .mc-block:last-child{margin-bottom:0;}
+.bs-matrix-cell .mc-title{background:#f8fafc;border-left:3px solid #0d0d0d;}
+.bs-matrix-cell .mc-title .mc-txt{font-weight:700;}
+.bs-matrix-cell .mc-sub{background:#eff6ff;border-left:3px solid #1677ff;}
+.bs-matrix-cell .mc-log{background:#f0fdf4;border-left:3px solid #22c55e;}
+.bs-matrix-cell .mc-btn{background:#faf5ff;border-left:3px solid #533afd;}
+.bs-matrix-cell .mc-link{background:#fff7ed;border-left:3px solid #f59e0b;}
+.bs-matrix-cell .mc-link .mc-txt{color:#d46b08;font-weight:600;}
+.bs-matrix-cell .mc-lbl{font-size:9px;font-weight:800;color:#94a3b8;letter-spacing:.3px;margin-bottom:3px;text-transform:uppercase;}
+.bs-matrix-cell .mc-txt{font-size:11px;color:#0d253d;line-height:1.45;}
+.bs-matrix-cell .mc-sub .mc-txt{color:#64748d;}
+.bs-matrix-cell .mc-btn .mc-txt{color:#533afd;font-weight:600;}
+.bs-matrix-cell .mc-note{font-size:10px;color:#d46b08;background:#fff7e6;border-radius:4px;padding:4px 6px;margin-top:4px;line-height:1.4;}
+.bs-matrix-table{table-layout:auto;min-width:1180px;}
+.bs-matrix-table th{white-space:nowrap;}
+.bs-matrix-table td:first-child{min-width:88px;}
+.bs-matrix-scroll{overflow-x:auto;margin-bottom:28px;-webkit-overflow-scrolling:touch;}
+.bs-layer-guide{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
+.bs-layer-card{background:#fff;border:1px solid #e3e8ee;border-radius:8px;padding:10px 12px;font-size:11px;line-height:1.55;}
+.bs-layer-card b{display:block;font-size:12px;color:#0d253d;margin-bottom:4px;}
+.bs-layer-card span{color:#64748d;}
 .bs-note{background:#fffbe6;border:1px solid #ffe58f;border-radius:6px;padding:10px 14px;font-size:11px;color:#614700;line-height:1.8;margin-bottom:12px;}
 </style>
 <div class="bs-wrap">
@@ -5312,443 +6058,379 @@ function confirmCancel() {
   <div class="bs-desc">
     首页蓝色状态条（<b>订单进度 Banner</b>）在用户有进行中订单时常驻展示，实时反映当前最高优先级任务，引导用户完成履约动作。<br/>
     <b>展示规则：</b>同时有多笔订单时，优先展示最早下单的未完结订单；激活完成后自动消失。<br/>
-    <b>适用流程：</b>新购 &amp; 以旧换新（共用同一组状态，以旧换新在「待激活」前多一条旧设备注销提示）。
+    <b>适用流程：</b>新购 &amp; 以旧换新（共用同一组状态，以旧换新在「待激活」前多一条旧设备注销提示）。<br/>
+    <b>文档结构：</b>采用「主阶段 × 子状态」矩阵 + 组合预览器，避免为每种组合单独建页。
   </div>
 
-  <!-- ── 状态总表 ── -->
-  <div class="bs-h1">状态全览</div>
-  <table class="bs-table">
+  <!-- ── 双维度模型说明 ── -->
+  <div class="bs-h1">展示模型 · 主阶段 × 资料子状态</div>
+  <div class="bs-desc" style="margin-bottom:14px;">
+    订单 Banner 由两个维度组合决定，<b>不必为每种组合单独做一页</b>：<br/>
+    <b>① 履约主阶段</b>（物流进度）：待付款 → 待发货 → 待收货 → 已收货待激活 → 完结<br/>
+    <b>② 办理子状态</b>（资料/签约）：未提交资料 → 资料审核中 → 资料驳回 → 待签约 → 办理完成<br/>
+    <b>组合规则：</b>除待付款外，主标题固定；副标题跟 ETC 办理子状态，底部跟物流主阶段，主按钮引导办理动作。<br/>
+    <b>覆盖范围：</b>「待发货」「待收货」「已收货」三个阶段均可能出现全部 4 种子状态（未提交/审核中/驳回/待签约）。
+  </div>
+
+  <!-- ── 交互预览（一个 Banner 看全部组合）── -->
+  <div style="background:#fff;border:1.5px solid #e3e8ee;border-radius:12px;padding:16px 18px;margin-bottom:24px;">
+    <div style="font-size:13px;font-weight:800;color:#0d253d;margin-bottom:12px;">🔍 Banner 组合预览</div>
+    <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin-bottom:16px;">
+      <div>
+        <div style="font-size:10px;color:#64748d;margin-bottom:4px;">场景</div>
+        <select id="bs-scene" onchange="renderBannerPreview()" style="border:1px solid #e3e8ee;border-radius:6px;padding:6px 10px;font-size:12px;">
+          <option value="buy">场景一 · 购买设备</option>
+          <option value="own">场景二 · 自有设备激活</option>
+        </select>
+      </div>
+      <div id="bs-main-wrap">
+        <div style="font-size:10px;color:#64748d;margin-bottom:4px;">履约主阶段</div>
+        <select id="bs-main" onchange="renderBannerPreview()" style="border:1px solid #e3e8ee;border-radius:6px;padding:6px 10px;font-size:12px;">
+          <option value="pay">待付款</option>
+          <option value="ship">待发货</option>
+          <option value="transit">待收货</option>
+          <option value="received">已收货 · 待激活</option>
+        </select>
+      </div>
+      <div id="bs-sub-wrap">
+        <div style="font-size:10px;color:#64748d;margin-bottom:4px;">办理子状态</div>
+        <select id="bs-sub" onchange="renderBannerPreview()" style="border:1px solid #e3e8ee;border-radius:6px;padding:6px 10px;font-size:12px;">
+          <option value="doc_pending">未提交资料</option>
+          <option value="doc_review">资料审核中</option>
+          <option value="doc_reject">资料驳回</option>
+          <option value="sign_pending">待签约</option>
+          <option value="process_done">办理完成</option>
+        </select>
+      </div>
+    </div>
+    <div id="bs-preview-host"></div>
+    <div id="bs-preview-meta" style="font-size:11px;color:#64748d;margin-top:10px;line-height:1.7;"></div>
+  </div>
+
+  <!-- ── 场景一 · 组合矩阵（紧凑表）── -->
+  <div class="bs-h1">场景一 · 购买设备 · 状态组合矩阵</div>
+  <div class="bs-layer-guide">
+    <div class="bs-layer-card" style="border-color:#0d0d0d;">
+      <b>① 主标题（固定）</b>
+      <span>除待付款外，统一为<strong>「您有一笔订单进行中」</strong>，不随状态变化。</span>
+    </div>
+    <div class="bs-layer-card" style="border-color:#1677ff;">
+      <b>② 副标题 · ETC 办理进度</b>
+      <span>随资料/签约子状态变化，说明当前办理到哪一步。</span>
+    </div>
+    <div class="bs-layer-card" style="border-color:#22c55e;">
+      <b>③ 底部 · 物流状态</b>
+      <span>独立一行小字，只写物流阶段（待出库 / 待发货 / 运输中 / 已签收）。</span>
+    </div>
+  </div>
+  <div class="bs-layer-guide" style="grid-template-columns:1fr 1fr;margin-top:-4px;">
+    <div class="bs-layer-card" style="border-color:#533afd;">
+      <b>④ 主按钮 · ETC 办理引导</b>
+      <span>右侧白色按钮（提交资料 / 去签约 / 去激活等）。</span>
+    </div>
+    <div class="bs-layer-card" style="border-color:#f59e0b;">
+      <b>⑤ 次操作 · 查看订单</b>
+      <span>主按钮下方文字链，跳转订单详情（待付款不展示）。</span>
+    </div>
+  </div>
+  <div class="bs-note" style="margin-bottom:12px;">待付款保持原逻辑；其余状态按上图五层结构。横轴 = 办理子状态，纵轴 = 履约主阶段。</div>
+  <div class="bs-matrix-scroll">
+  <table class="bs-table bs-matrix-table">
     <thead>
       <tr>
-        <th style="width:80px;">状态</th>
-        <th style="width:440px;">Banner 展示内容</th>
-        <th>触发条件</th>
-        <th>按钮跳转（主操作 → ETC办理流程；查看订单 → 订单详情）</th>
-        <th>消失条件</th>
+        <th style="width:96px;">履约主阶段</th>
+        <th>未提交资料</th>
+        <th>资料审核中</th>
+        <th>资料驳回</th>
+        <th>待签约</th>
+        <th>办理完成</th>
       </tr>
     </thead>
     <tbody>
-
-      <!-- 1. 待付款 -->
       <tr>
-        <td><span class="bs-state bs-s-pay">① 待付款</span></td>
-        <td>
-          <div class="bs-banner-preview" style="background:#d46b08;">
-          <div class="bp-left">
-            <div class="title">你有一笔订单待付款</div>
-            <div class="sub">¥125 · 限时 30 分钟内完成支付</div>
-          </div>
-          <div class="bp-right">
-              <div class="btn-action" style="color:#d46b08;">去支付</div>
-          </div>
-        </div>
-        <td class="bs-trigger">用户提交订单后尚未完成支付；订单未超时取消</td>
-        <td>「去支付」→ 支付页<br/>「查看订单」→ 订单详情页</td>
-        <td>完成支付 / 订单超时取消</td>
+        <td><span class="bs-state bs-s-pay">待付款</span></td>
+        <td colspan="5" class="bs-matrix-cell">
+          <div class="mc-block mc-title"><div class="mc-lbl">主标题</div><div class="mc-txt">你有一笔订单待付款</div></div>
+          <div class="mc-block mc-sub"><div class="mc-lbl">副标题</div><div class="mc-txt">限时 30 分钟内完成支付</div></div>
+          <div class="mc-block mc-btn"><div class="mc-lbl">主按钮</div><div class="mc-txt">去支付</div></div>
+          <div class="mc-note">待付款逻辑不变 · 无物流 · 无「查看订单」</div>
+        </td>
       </tr>
-
-      <!-- 2. 待发货·资料未提交 -->
       <tr>
-        <td><span class="bs-state bs-s-ship">② 待发货<br/><small>资料未提交</small></span></td>
-        <td>
-          <div class="bs-banner-preview">
-          <div class="bp-left">
-            <div class="title">你有一笔订单待提交资料</div>
-            <div class="sub">可提前提交资料，审核通过后即可签约</div>
-            <div class="logistics"><span style="background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.85);border-radius:8px;padding:2px 8px;font-size:10px;font-weight:600;">📦 待出库</span></div>
-          </div>
-          <div class="bp-right">
-              <div class="btn-action" style="color:#1677ff;">去提交</div>
-              <div class="view-order">查看订单 ›</div>
-          </div>
-        </div>
-        <td class="bs-trigger">支付成功；资料尚未提交；商家未发货</td>
-        <td>「去提交」→ 资料上传页<br/>「查看订单」→ 订单详情页</td>
-        <td>资料提交成功后切换至下一状态</td>
+        <td><span class="bs-state bs-s-ship">待发货</span></td>
+<td class="bs-matrix-cell">
+          <div class="mc-block mc-title"><div class="mc-lbl">主标题（固定）</div><div class="mc-txt">您有一笔订单进行中</div></div>
+          <div class="mc-block mc-sub"><div class="mc-lbl">ETC 办理进度</div><div class="mc-txt">可提前提交资料，审核通过后即可签约</div></div>
+          <div class="mc-block mc-log"><div class="mc-lbl">物流状态</div><div class="mc-txt">待出库</div></div>
+          <div class="mc-block mc-btn"><div class="mc-lbl">主按钮</div><div class="mc-txt">提交资料</div></div>
+          <div class="mc-block mc-link"><div class="mc-lbl">次操作</div><div class="mc-txt">查看订单</div></div>
+          
+        </td>
+<td class="bs-matrix-cell">
+          <div class="mc-block mc-title"><div class="mc-lbl">主标题（固定）</div><div class="mc-txt">您有一笔订单进行中</div></div>
+          <div class="mc-block mc-sub"><div class="mc-lbl">ETC 办理进度</div><div class="mc-txt">资料审核中，预计 1 个工作日内完成</div></div>
+          <div class="mc-block mc-log"><div class="mc-lbl">物流状态</div><div class="mc-txt">待出库</div></div>
+          <div class="mc-block mc-btn"><div class="mc-lbl">主按钮</div><div class="mc-txt">查看资料</div></div>
+          <div class="mc-block mc-link"><div class="mc-lbl">次操作</div><div class="mc-txt">查看订单</div></div>
+          
+        </td>
+<td class="bs-matrix-cell">
+          <div class="mc-block mc-title"><div class="mc-lbl">主标题（固定）</div><div class="mc-txt">您有一笔订单进行中</div></div>
+          <div class="mc-block mc-sub"><div class="mc-lbl">ETC 办理进度</div><div class="mc-txt">资料审核未通过，请修改后重新提交</div></div>
+          <div class="mc-block mc-log"><div class="mc-lbl">物流状态</div><div class="mc-txt">待出库</div></div>
+          <div class="mc-block mc-btn"><div class="mc-lbl">主按钮</div><div class="mc-txt">重新提交</div></div>
+          <div class="mc-block mc-link"><div class="mc-lbl">次操作</div><div class="mc-txt">查看订单</div></div>
+          
+        </td>
+<td class="bs-matrix-cell">
+          <div class="mc-block mc-title"><div class="mc-lbl">主标题（固定）</div><div class="mc-txt">您有一笔订单进行中</div></div>
+          <div class="mc-block mc-sub"><div class="mc-lbl">ETC 办理进度</div><div class="mc-txt">车辆未签约</div></div>
+          <div class="mc-block mc-log"><div class="mc-lbl">物流状态</div><div class="mc-txt">待发货</div></div>
+          <div class="mc-block mc-btn"><div class="mc-lbl">主按钮</div><div class="mc-txt">去签约</div></div>
+          <div class="mc-block mc-link"><div class="mc-lbl">次操作</div><div class="mc-txt">查看订单</div></div>
+          
+        </td>
+<td class="bs-matrix-cell">
+          <div class="mc-block mc-title"><div class="mc-lbl">主标题（固定）</div><div class="mc-txt">您有一笔订单进行中</div></div>
+          <div class="mc-block mc-sub"><div class="mc-lbl">ETC 办理进度</div><div class="mc-txt">资料签约已完成，等待仓库发出</div></div>
+          <div class="mc-block mc-log"><div class="mc-lbl">物流状态</div><div class="mc-txt">待发货</div></div>
+          <div class="mc-block mc-btn"><div class="mc-lbl">主按钮</div><div class="mc-txt">无</div></div>
+          <div class="mc-block mc-link"><div class="mc-lbl">次操作</div><div class="mc-txt">查看订单</div></div>
+          
+        </td>
       </tr>
-
-      <!-- 3. 待发货·资料审核中 -->
       <tr>
-        <td><span class="bs-state bs-s-doc">③ 待发货<br/><small>资料审核中</small></span></td>
-        <td>
-          <div class="bs-banner-preview" style="background:#531dab;">
-          <div class="bp-left">
-            <div class="title">你有一笔订单资料审核中</div>
-            <div class="sub">资料审核中</div>
-            <div class="logistics"><span style="background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.85);border-radius:8px;padding:2px 8px;font-size:10px;font-weight:600;">📦 待出库</span></div>
-          </div>
-          <div class="bp-right">
-              <div class="btn-action" style="color:#531dab;">查看资料</div>
-              <div class="view-order">查看订单 ›</div>
-          </div>
-        </div>
-        <td class="bs-trigger">资料已提交，后台审核处理中；商家未发货</td>
-        <td>「查看资料」→ ETC资料核对页（只读）<br/>「查看订单」→ 订单详情页</td>
-        <td>审核通过 / 审核驳回</td>
+        <td><span class="bs-state bs-s-transit">待收货</span></td>
+<td class="bs-matrix-cell">
+          <div class="mc-block mc-title"><div class="mc-lbl">主标题（固定）</div><div class="mc-txt">您有一笔订单进行中</div></div>
+          <div class="mc-block mc-sub"><div class="mc-lbl">ETC 办理进度</div><div class="mc-txt">请尽快提交资料，以免影响激活</div></div>
+          <div class="mc-block mc-log"><div class="mc-lbl">物流状态</div><div class="mc-txt">运输中</div></div>
+          <div class="mc-block mc-btn"><div class="mc-lbl">主按钮</div><div class="mc-txt">提交资料</div></div>
+          <div class="mc-block mc-link"><div class="mc-lbl">次操作</div><div class="mc-txt">查看订单</div></div>
+          
+        </td>
+<td class="bs-matrix-cell">
+          <div class="mc-block mc-title"><div class="mc-lbl">主标题（固定）</div><div class="mc-txt">您有一笔订单进行中</div></div>
+          <div class="mc-block mc-sub"><div class="mc-lbl">ETC 办理进度</div><div class="mc-txt">资料审核中，预计 1 个工作日内完成</div></div>
+          <div class="mc-block mc-log"><div class="mc-lbl">物流状态</div><div class="mc-txt">运输中</div></div>
+          <div class="mc-block mc-btn"><div class="mc-lbl">主按钮</div><div class="mc-txt">查看资料</div></div>
+          <div class="mc-block mc-link"><div class="mc-lbl">次操作</div><div class="mc-txt">查看订单</div></div>
+          
+        </td>
+<td class="bs-matrix-cell">
+          <div class="mc-block mc-title"><div class="mc-lbl">主标题（固定）</div><div class="mc-txt">您有一笔订单进行中</div></div>
+          <div class="mc-block mc-sub"><div class="mc-lbl">ETC 办理进度</div><div class="mc-txt">资料审核未通过，请修改后重新提交</div></div>
+          <div class="mc-block mc-log"><div class="mc-lbl">物流状态</div><div class="mc-txt">运输中</div></div>
+          <div class="mc-block mc-btn"><div class="mc-lbl">主按钮</div><div class="mc-txt">重新提交</div></div>
+          <div class="mc-block mc-link"><div class="mc-lbl">次操作</div><div class="mc-txt">查看订单</div></div>
+          
+        </td>
+<td class="bs-matrix-cell">
+          <div class="mc-block mc-title"><div class="mc-lbl">主标题（固定）</div><div class="mc-txt">您有一笔订单进行中</div></div>
+          <div class="mc-block mc-sub"><div class="mc-lbl">ETC 办理进度</div><div class="mc-txt">车辆未签约</div></div>
+          <div class="mc-block mc-log"><div class="mc-lbl">物流状态</div><div class="mc-txt">运输中</div></div>
+          <div class="mc-block mc-btn"><div class="mc-lbl">主按钮</div><div class="mc-txt">去签约</div></div>
+          <div class="mc-block mc-link"><div class="mc-lbl">次操作</div><div class="mc-txt">查看订单</div></div>
+          
+        </td>
+<td class="bs-matrix-cell">
+          <div class="mc-block mc-title"><div class="mc-lbl">主标题（固定）</div><div class="mc-txt">您有一笔订单进行中</div></div>
+          <div class="mc-block mc-sub"><div class="mc-lbl">ETC 办理进度</div><div class="mc-txt">设备已发出，签收后请完成激活</div></div>
+          <div class="mc-block mc-log"><div class="mc-lbl">物流状态</div><div class="mc-txt">运输中</div></div>
+          <div class="mc-block mc-btn"><div class="mc-lbl">主按钮</div><div class="mc-txt">查看资料</div></div>
+          <div class="mc-block mc-link"><div class="mc-lbl">次操作</div><div class="mc-txt">查看订单</div></div>
+          
+        </td>
       </tr>
-
-      <!-- 4. 待发货·审核驳回 -->
       <tr>
-        <td><span class="bs-state bs-s-doc">④ 待发货<br/><small>资料驳回</small></span></td>
-        <td>
-          <div class="bs-banner-preview" style="background:#cf1322;">
-          <div class="bp-left">
-            <div class="title">你有一笔订单需重新提交资料</div>
-            <div class="sub">资料审核未通过，请修改后重新提交</div>
-            <div class="logistics"><span style="background:rgba(255,255,255,0.15);color:rgba(255,204,199,0.9);border-radius:8px;padding:2px 8px;font-size:10px;font-weight:600;">📦 待出库</span></div>
-          </div>
-          <div class="bp-right">
-              <div class="btn-action" style="color:#cf1322;">重新提交</div>
-              <div class="view-order">查看订单 ›</div>
-          </div>
-        </div>
-        <td class="bs-trigger">资料审核结果为「驳回」</td>
-        <td>「重新提交」→ 资料上传页（带驳回原因）<br/>「查看订单」→ 订单详情页</td>
-        <td>重新提交资料成功</td>
+        <td><span class="bs-state bs-s-activate">已收货<br/>待激活</span></td>
+<td class="bs-matrix-cell">
+          <div class="mc-block mc-title"><div class="mc-lbl">主标题（固定）</div><div class="mc-txt">您有一笔订单进行中</div></div>
+          <div class="mc-block mc-sub"><div class="mc-lbl">ETC 办理进度</div><div class="mc-txt">请提交资料，审核通过后可签约激活</div></div>
+          <div class="mc-block mc-log"><div class="mc-lbl">物流状态</div><div class="mc-txt">已签收</div></div>
+          <div class="mc-block mc-btn"><div class="mc-lbl">主按钮</div><div class="mc-txt">提交资料</div></div>
+          <div class="mc-block mc-link"><div class="mc-lbl">次操作</div><div class="mc-txt">查看订单</div></div>
+          
+        </td>
+<td class="bs-matrix-cell">
+          <div class="mc-block mc-title"><div class="mc-lbl">主标题（固定）</div><div class="mc-txt">您有一笔订单进行中</div></div>
+          <div class="mc-block mc-sub"><div class="mc-lbl">ETC 办理进度</div><div class="mc-txt">资料审核中，预计 1 个工作日内完成</div></div>
+          <div class="mc-block mc-log"><div class="mc-lbl">物流状态</div><div class="mc-txt">已签收</div></div>
+          <div class="mc-block mc-btn"><div class="mc-lbl">主按钮</div><div class="mc-txt">查看资料</div></div>
+          <div class="mc-block mc-link"><div class="mc-lbl">次操作</div><div class="mc-txt">查看订单</div></div>
+          
+        </td>
+<td class="bs-matrix-cell">
+          <div class="mc-block mc-title"><div class="mc-lbl">主标题（固定）</div><div class="mc-txt">您有一笔订单进行中</div></div>
+          <div class="mc-block mc-sub"><div class="mc-lbl">ETC 办理进度</div><div class="mc-txt">资料审核未通过，请修改后重新提交</div></div>
+          <div class="mc-block mc-log"><div class="mc-lbl">物流状态</div><div class="mc-txt">已签收</div></div>
+          <div class="mc-block mc-btn"><div class="mc-lbl">主按钮</div><div class="mc-txt">重新提交</div></div>
+          <div class="mc-block mc-link"><div class="mc-lbl">次操作</div><div class="mc-txt">查看订单</div></div>
+          
+        </td>
+<td class="bs-matrix-cell">
+          <div class="mc-block mc-title"><div class="mc-lbl">主标题（固定）</div><div class="mc-txt">您有一笔订单进行中</div></div>
+          <div class="mc-block mc-sub"><div class="mc-lbl">ETC 办理进度</div><div class="mc-txt">车辆未签约</div></div>
+          <div class="mc-block mc-log"><div class="mc-lbl">物流状态</div><div class="mc-txt">已签收</div></div>
+          <div class="mc-block mc-btn"><div class="mc-lbl">主按钮</div><div class="mc-txt">去签约</div></div>
+          <div class="mc-block mc-link"><div class="mc-lbl">次操作</div><div class="mc-txt">查看订单</div></div>
+          
+        </td>
+<td class="bs-matrix-cell">
+          <div class="mc-block mc-title"><div class="mc-lbl">主标题（固定）</div><div class="mc-txt">您有一笔订单进行中</div></div>
+          <div class="mc-block mc-sub"><div class="mc-lbl">ETC 办理进度</div><div class="mc-txt">签约已完成，激活后即可通行</div></div>
+          <div class="mc-block mc-log"><div class="mc-lbl">物流状态</div><div class="mc-txt">已签收</div></div>
+          <div class="mc-block mc-btn"><div class="mc-lbl">主按钮</div><div class="mc-txt">去激活</div></div>
+          <div class="mc-block mc-link"><div class="mc-lbl">次操作</div><div class="mc-txt">查看订单</div></div>
+          <div class="mc-note">换新：办理进度改为「激活后旧设备将自动注销」</div>
+        </td>
       </tr>
-
-      <!-- 5. 待签约 -->
-      <tr>
-        <td><span class="bs-state bs-s-sign">⑤ 待发货<br/><small>待签约</small></span></td>
-        <td>
-          <div class="bs-banner-preview" style="background:#c41d7f;">
-          <div class="bp-left">
-            <div class="title">你有一笔订单待签约</div>
-            <div class="sub">车辆未签约</div>
-            <div class="logistics"><span style="background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.85);border-radius:8px;padding:2px 8px;font-size:10px;font-weight:600;">📦 待发货</span></div>
-          </div>
-          <div class="bp-right">
-              <div class="btn-action" style="color:#c41d7f;">去签约</div>
-              <div class="view-order">查看订单 ›</div>
-          </div>
-        </div>
-        <td class="bs-trigger">资料审核通过；车辆签约未完成</td>
-        <td>「去签约」→ 车辆签约页<br/>「查看订单」→ 订单详情页</td>
-        <td>签约完成</td>
-      </tr>
-
-      <!-- 6. 待收货 -->
-      <tr>
-        <td><span class="bs-state bs-s-transit">⑥ 待收货</span></td>
-        <td>
-          <div class="bs-banner-preview">
-          <div class="bp-left">
-            <div class="title">你有一笔订单待收货</div>
-            <div class="sub">设备已发出，请注意查收</div>
-            <div class="logistics"><span style="background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.85);border-radius:8px;padding:2px 8px;font-size:10px;font-weight:600;">🚚 运输中</span></div>
-          </div>
-          <div class="bp-right">
-              <div class="btn-action" style="color:#1677ff;">查看资料</div>
-              <div class="view-order">查看订单 ›</div>
-          </div>
-        </div>
-        <td class="bs-trigger">订单已发货；用户未确认收货</td>
-        <td>「查看资料」→ ETC资料核对页<br/>「查看订单」→ 订单详情页</td>
-        <td>用户确认收货 / 物流签收后自动切换</td>
-      </tr>
-
-      <!-- 7. 待激活（新购） -->
-      <tr>
-        <td><span class="bs-state bs-s-activate">⑦ 待激活<br/><small>新购</small></span></td>
-        <td>
-          <div class="bs-banner-preview" style="background:#166534;">
-          <div class="bp-left">
-            <div class="title">你有一笔订单待激活</div>
-            <div class="sub">设备已签收，激活后即可享受高速 95 折</div>
-            <div class="logistics"><span style="background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.85);border-radius:8px;padding:2px 8px;font-size:10px;font-weight:600;">✅ 已签收</span></div>
-          </div>
-          <div class="bp-right">
-              <div class="btn-action" style="color:#166534;">去激活</div>
-              <div class="view-order">查看订单 ›</div>
-          </div>
-        </div>
-        <td class="bs-trigger">订单已签收；设备未激活</td>
-        <td>「去激活」→ 激活设备页<br/>「查看订单」→ 订单详情页</td>
-        <td>激活成功 → Banner 消失</td>
-      </tr>
-
-      <!-- 8. 待激活（以旧换新） -->
-      <tr>
-        <td><span class="bs-state bs-s-activate">⑦ 待激活<br/><small>以旧换新</small></span></td>
-        <td>
-          <div class="bs-banner-preview" style="background:#d46b08;">
-          <div class="bp-left">
-            <div class="title">你有一笔订单待激活</div>
-            <div class="sub">新设备已签收，激活后旧设备将自动注销</div>
-            <div class="logistics"><span style="background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.85);border-radius:8px;padding:2px 8px;font-size:10px;font-weight:600;">✅ 已签收</span></div>
-          </div>
-          <div class="bp-right">
-              <div class="btn-action" style="color:#d46b08;">去激活</div>
-              <div class="view-order">查看订单 ›</div>
-          </div>
-        </div>
-        <td class="bs-trigger">以旧换新订单已签收；新设备未激活</td>
-        <td>「去激活」→ 激活页（含旧设备注销确认弹窗）<br/>「查看订单」→ 订单详情页</td>
-        <td>激活成功 → Banner 消失</td>
-      </tr>
-
-      <!-- 9. 消失 -->
       <tr style="background:#fafafa;">
-        <td><span class="bs-state bs-s-done">⑧ 已完结</span></td>
-        <td><div style="font-size:11px;color:#aaa;padding:6px 0;">— 不展示 —</div></td>
-        <td class="bs-trigger" style="color:#aaa;">设备激活成功</td>
-        <td style="color:#aaa;">—</td>
-        <td style="color:#aaa;">永久消失</td>
+        <td><span class="bs-state bs-s-done">已完结</span></td>
+        <td colspan="5" style="color:#aaa;font-size:11px;padding:12px;">不展示 Banner</td>
       </tr>
-
     </tbody>
   </table>
+  </div>
 
-  <!-- ── 场景二：自有设备激活 ── -->
-  <div class="bs-h1" style="margin-top:36px;">场景二：自有设备来此激活（其他渠道购买）</div>
-  <div class="bs-desc">用户已在其他渠道购买 ETC 设备，来小程序完成资料提交、签约、激活全流程。无物流环节，无付款状态。</div>
+  <!-- ── 场景二 · 自有设备激活 ── -->
+  <div class="bs-h1" style="margin-top:36px;">场景二 · 自有设备激活 · 状态表</div>
+  <div class="bs-desc">用户已在其他渠道购买 ETC 设备，来小程序完成资料、签约、激活。无付款与物流环节；主标题、办理进度、主按钮、查看订单与场景一一致。</div>
   <table class="bs-table">
     <thead>
       <tr>
-        <th style="width:80px;">状态</th>
-        <th style="width:440px;">Banner 展示内容</th>
-        <th>触发条件</th>
-        <th>按钮跳转（主操作 → ETC办理流程；查看订单 → 订单详情）</th>
-        <th>消失条件</th>
+        <th style="width:100px;">办理子状态</th>
+        <th>Banner 五层结构</th>
+        <th style="width:200px;">主按钮跳转</th>
       </tr>
     </thead>
     <tbody>
-
-      <!-- B. 资料审核中 -->
       <tr>
-        <td><span class="bs-state bs-s-doc">① 资料审核中</span></td>
-        <td>
-          <div class="bs-banner-preview" style="background:#531dab;">
-            <div class="bp-left">
-              <div class="title">你有一笔订单资料审核中</div>
-              <div class="sub">资料审核中</div>
-            </div>
-            <div class="bp-right">
-              <div class="btn-action" style="color:#531dab;">查看资料</div>
-              <div class="view-order">查看订单 ›</div>
-            </div>
-          </div>
+        <td><span class="bs-state bs-s-doc">未提交资料</span></td>
+        <td class="bs-matrix-cell">
+          <div class="mc-block mc-title"><div class="mc-lbl">主标题（固定）</div><div class="mc-txt">您有一笔订单进行中</div></div>
+          <div class="mc-block mc-sub"><div class="mc-lbl">ETC 办理进度</div><div class="mc-txt">请提交车辆资料，审核通过后可签约</div></div>
+          <div class="mc-block mc-log"><div class="mc-lbl">物流状态</div><div class="mc-txt">—（无物流）</div></div>
+          <div class="mc-block mc-btn"><div class="mc-lbl">主按钮</div><div class="mc-txt">提交资料</div></div>
+          <div class="mc-block mc-link"><div class="mc-lbl">次操作</div><div class="mc-txt">查看订单</div></div>
         </td>
-        <td class="bs-trigger">资料已提交，后台审核处理中</td>
-        <td>「查看资料」→ ETC资料核对页（只读）<br/>「查看订单」→ 订单详情页</td>
-        <td>审核通过 / 审核驳回</td>
+        <td>ETC 办理流程 · 提交资料页</td>
       </tr>
-
-      <!-- C. 资料审核未通过 -->
       <tr>
-        <td><span class="bs-state bs-s-doc">② 审核未通过<br/><small>重新上传</small></span></td>
-        <td>
-          <div class="bs-banner-preview" style="background:#cf1322;">
-            <div class="bp-left">
-              <div class="title">你有一笔订单需重新提交资料</div>
-              <div class="sub">资料审核未通过，请修改后重新上传</div>
-            </div>
-            <div class="bp-right">
-              <div class="btn-action" style="color:#cf1322;">重新上传</div>
-              <div class="view-order">查看订单 ›</div>
-            </div>
-          </div>
+        <td><span class="bs-state bs-s-doc">资料审核中</span></td>
+        <td class="bs-matrix-cell">
+          <div class="mc-block mc-title"><div class="mc-lbl">主标题（固定）</div><div class="mc-txt">您有一笔订单进行中</div></div>
+          <div class="mc-block mc-sub"><div class="mc-lbl">ETC 办理进度</div><div class="mc-txt">资料审核中，预计 1 个工作日内完成</div></div>
+          <div class="mc-block mc-log"><div class="mc-lbl">物流状态</div><div class="mc-txt">—（无物流）</div></div>
+          <div class="mc-block mc-btn"><div class="mc-lbl">主按钮</div><div class="mc-txt">查看资料</div></div>
+          <div class="mc-block mc-link"><div class="mc-lbl">次操作</div><div class="mc-txt">查看订单</div></div>
         </td>
-        <td class="bs-trigger">资料审核结果为「驳回」</td>
-        <td>「重新上传」→ ETC资料核对页（含驳回原因）<br/>「查看订单」→ 订单详情页</td>
-        <td>重新提交资料成功</td>
+        <td>ETC 办理流程 · 资料详情</td>
       </tr>
-
-      <!-- D. 待签约 -->
       <tr>
-        <td><span class="bs-state bs-s-sign">③ 待签约</span></td>
-        <td>
-          <div class="bs-banner-preview" style="background:#c41d7f;">
-            <div class="bp-left">
-              <div class="title">你有一笔订单待签约</div>
-              <div class="sub">车辆未签约</div>
-            </div>
-            <div class="bp-right">
-              <div class="btn-action" style="color:#c41d7f;">去签约</div>
-              <div class="view-order">查看订单 ›</div>
-            </div>
-          </div>
+        <td><span class="bs-state bs-s-doc">资料驳回</span></td>
+        <td class="bs-matrix-cell">
+          <div class="mc-block mc-title"><div class="mc-lbl">主标题（固定）</div><div class="mc-txt">您有一笔订单进行中</div></div>
+          <div class="mc-block mc-sub"><div class="mc-lbl">ETC 办理进度</div><div class="mc-txt">资料审核未通过，请修改后重新提交</div></div>
+          <div class="mc-block mc-log"><div class="mc-lbl">物流状态</div><div class="mc-txt">—（无物流）</div></div>
+          <div class="mc-block mc-btn"><div class="mc-lbl">主按钮</div><div class="mc-txt">重新提交</div></div>
+          <div class="mc-block mc-link"><div class="mc-lbl">次操作</div><div class="mc-txt">查看订单</div></div>
         </td>
-        <td class="bs-trigger">资料审核通过；车辆签约未完成</td>
-        <td>「去签约」→ ETC车辆签约页<br/>「查看订单」→ 订单详情页</td>
-        <td>签约完成</td>
+        <td>ETC 办理流程 · 重新提交</td>
       </tr>
-
-      <!-- E. 待激活 -->
       <tr>
-        <td><span class="bs-state bs-s-activate">④ 待激活</span></td>
-        <td>
-          <div class="bs-banner-preview" style="background:#166534;">
-            <div class="bp-left">
-              <div class="title">你有一笔订单待激活</div>
-              <div class="sub">签约已完成，请激活设备后即可通行</div>
-            </div>
-            <div class="bp-right">
-              <div class="btn-action" style="color:#166534;">去激活</div>
-              <div class="view-order">查看订单 ›</div>
-            </div>
-          </div>
+        <td><span class="bs-state bs-s-sign">待签约</span></td>
+        <td class="bs-matrix-cell">
+          <div class="mc-block mc-title"><div class="mc-lbl">主标题（固定）</div><div class="mc-txt">您有一笔订单进行中</div></div>
+          <div class="mc-block mc-sub"><div class="mc-lbl">ETC 办理进度</div><div class="mc-txt">车辆未签约</div></div>
+          <div class="mc-block mc-log"><div class="mc-lbl">物流状态</div><div class="mc-txt">—（无物流）</div></div>
+          <div class="mc-block mc-btn"><div class="mc-lbl">主按钮</div><div class="mc-txt">去签约</div></div>
+          <div class="mc-block mc-link"><div class="mc-lbl">次操作</div><div class="mc-txt">查看订单</div></div>
         </td>
-        <td class="bs-trigger">车辆签约完成；设备未激活</td>
-        <td>「去激活」→ ETC设备激活页<br/>「查看订单」→ 订单详情页</td>
-        <td>激活成功 → Banner 消失</td>
+        <td>ETC 办理流程 · 签约页</td>
       </tr>
-
+      <tr>
+        <td><span class="bs-state bs-s-activate">待激活</span></td>
+        <td class="bs-matrix-cell">
+          <div class="mc-block mc-title"><div class="mc-lbl">主标题（固定）</div><div class="mc-txt">您有一笔订单进行中</div></div>
+          <div class="mc-block mc-sub"><div class="mc-lbl">ETC 办理进度</div><div class="mc-txt">签约已完成，请激活设备后即可通行</div></div>
+          <div class="mc-block mc-log"><div class="mc-lbl">物流状态</div><div class="mc-txt">—（无物流）</div></div>
+          <div class="mc-block mc-btn"><div class="mc-lbl">主按钮</div><div class="mc-txt">去激活</div></div>
+          <div class="mc-block mc-link"><div class="mc-lbl">次操作</div><div class="mc-txt">查看订单</div></div>
+        </td>
+        <td>ETC 办理流程 · 激活页</td>
+      </tr>
+      <tr style="background:#fafafa;">
+        <td><span class="bs-state bs-s-done">已完结</span></td>
+        <td colspan="2" style="color:#aaa;font-size:11px;padding:12px;">不展示 Banner</td>
+      </tr>
     </tbody>
   </table>
 
   <!-- ── 补充规则 ── -->
   <div class="bs-h1">补充规则</div>
   <div class="bs-note">
-    <b>优先级：</b>同一用户有多笔进行中订单时，按下单时间升序展示第一笔（最早下单优先）。<br/>
-    <b>多状态并存：</b>资料审核与物流状态可并行，Banner 以「需要用户操作」的状态优先（如审核驳回 > 待发货无操作）。<br/>
-    <b>已付款但无待办：</b>资料已提交且签约完成后，Banner 文案降级为「待收货」状态，不再有操作按钮，仅展示进度。<br/>
-    <b>展示位置：</b>固定在首页 Banner 轮播图下方、热门业务格子上方，蓝色圆角卡片，高度固定 56px。<br/>
-    <b>点击整体：</b>点击状态条任意位置（非按钮区域）均跳转订单详情页。
+    <div style="font-size:12px;font-weight:800;color:#1677ff;margin-bottom:6px;">▌ Banner 信息层级（五层分工）</div>
+    <b>① 主标题：</b>除待付款外固定为「您有一笔订单进行中」，不随子状态变化。<br/>
+    <b>② 副标题 · ETC 办理进度：</b>随资料/签约子状态变化；不写物流进度。<br/>
+    <b>③ 底部 · 物流状态：</b>独立一行小字（待出库 / 待发货 / 运输中 / 已签收）；场景二无物流时不展示该行。<br/>
+    <b>④ 主按钮：</b>ETC 办理引导（提交资料 / 查看资料 / 去签约 / 去激活等），办理完成且无需操作时可为空。<br/>
+    <b>⑤ 次操作：</b>「查看订单」文字链，跳转订单详情；待付款不展示。<br/>
+
+    <div style="font-size:12px;font-weight:800;color:#1677ff;margin:12px 0 6px;">▌ 展示与优先级</div>
+    <b>展示位置：</b>固定在首页 Banner 轮播图下方、热门业务格子上方；待付款为橙色样式，其余为深色卡片。<br/>
+    <b>点击整体：</b>点击状态条非按钮区域跳转订单详情页。<br/>
+    <b>优先级：</b>同一用户有多笔进行中订单时，按下单时间升序展示最早一笔。<br/>
+    <b>多状态并存：</b>资料办理与物流可并行；副标题跟办理子状态，底部跟物流主阶段。<br/>
+    <b>完结消失：</b>激活完成后 Banner 永久消失。<br/>
+
+    <div style="font-size:12px;font-weight:800;color:#1677ff;margin:12px 0 6px;">▌ 按钮逻辑</div>
+    <b>主按钮上限 1 个；</b>「查看订单」与主按钮并存（待付款除外）。<br/>
+    <b>跳转：</b>主按钮 → ETC 办理对应步骤；查看订单 → 订单详情。<br/>
+
+    <div style="font-size:12px;font-weight:800;color:#1677ff;margin:12px 0 6px;">▌ 场景差异</div>
+    <b>场景一 · 购买设备：</b>含待付款与物流五层；以旧换新在「待激活」办理进度可改为「激活后旧设备将自动注销」。<br/>
+    <b>场景二 · 自有设备激活：</b>无待付款、无物流行；其余四层与场景一一致。<br/>
   </div>
 
 </div>
 </div>
-
 
 <!-- ═══════════════════════════════════════
      运营触达图示
 ════════════════════════════════════════ -->
 <div class="page" id="page-ops-touch">
 <style>
-/* ── 共用 ── */
-.ot-wrap{max-width:1200px;margin:0 auto;padding:24px 24px 60px;}
-.ot-h1{font-size:16px;font-weight:800;color:#0d253d;margin:28px 0 6px;padding-left:14px;border-left:4px solid #533afd;display:flex;align-items:center;gap:8px;}
-.ot-h1.orange{border-color:#fa8c16;}
-.ot-h2{font-size:13px;font-weight:700;color:#fff;padding:3px 12px;border-radius:12px;display:inline-flex;align-items:center;gap:4px;margin:16px 0 12px;}
-.ot-row{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:20px;align-items:flex-start;}
-.ot-card{display:flex;flex-direction:column;align-items:center;gap:8px;}
-.ot-lbl{font-size:13px;font-weight:700;color:#555;text-align:center;}
-.ot-sub{font-size:12px;color:#aaa;text-align:center;margin-top:-5px;}
-/* ── 手机壳 ── */
-.mp{width:260px;background:#1c1c1e;border-radius:38px;padding:9px;box-shadow:0 8px 28px rgba(0,0,0,.30);}
-.ms{border-radius:30px;overflow:hidden;background:#fff;position:relative;}
-.mbar{background:#f2f2f7;height:28px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;}
-.mbar span{font-size:12px;color:#333;}
-.mbar .dyn{width:48px;height:10px;background:#1c1c1e;border-radius:8px;}
-/* ── 短信 ── */
-.sms-wrap{background:#f2f2f7;padding:8px 10px;min-height:230px;}
-.sms-sender{text-align:center;font-size:11px;color:#8e8e93;margin-bottom:6px;}
-.sms-bubble{background:#e5e5ea;border-radius:16px 16px 16px 4px;padding:12px 14px;font-size:12px;color:#1c1c1e;line-height:1.8;max-width:210px;word-break:break-all;}
-.sms-bubble a{color:#533afd;text-decoration:none;}
-/* ── 小程序订阅消息 ── */
-.wxmsg-wrap{background:#ededed;padding:8px;}
-.wxmsg-card{background:#fff;border-radius:6px;margin-bottom:8px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.08);}
-.wxmsg-body{padding:10px 12px;}
-.wxmsg-title{font-size:13px;font-weight:600;color:#1c1c1e;margin-bottom:8px;display:flex;align-items:center;gap:4px;}
-.wxmsg-row{display:flex;justify-content:space-between;padding:3px 0;font-size:12px;color:#1c1c1e;border-bottom:1px solid #f2f2f7;}
-.wxmsg-row:last-child{border-bottom:none;}
-.wxmsg-row .k{color:#8e8e93;flex-shrink:0;margin-right:6px;}
-.wxmsg-row .v{text-align:right;font-weight:500;}
-.wxmsg-footer{border-top:1px solid #f2f2f7;padding:6px 12px;display:flex;align-items:center;justify-content:space-between;}
-.wxmsg-footer-logo{display:flex;align-items:center;gap:5px;}
-.wxmsg-footer-logo .ico{width:24px;height:24px;background:#e02020;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;font-weight:800;}
-.wxmsg-footer-logo span{font-size:11px;color:#1c1c1e;font-weight:500;}
-.wxmsg-footer a{font-size:11px;color:#576b95;display:flex;align-items:center;gap:2px;}
-/* ── 公众号服务通知 ── */
-.svcmsg-nav{background:#ededed;padding:6px 10px;display:flex;align-items:center;justify-content:space-between;}
-.svcmsg-nav span{font-size:12px;color:#1c1c1e;font-weight:600;}
-.svcmsg-card{background:#fff;border-radius:6px;margin:6px 8px;box-shadow:0 1px 2px rgba(0,0,0,.08);}
-.svcmsg-header{padding:8px 12px;display:flex;align-items:center;gap:6px;border-bottom:1px solid #f2f2f7;}
-.svcmsg-header .ico{width:24px;height:24px;background:#e02020;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:800;flex-shrink:0;}
-.svcmsg-header .info .name{font-size:12px;font-weight:600;color:#1c1c1e;}
-.svcmsg-header .info .time{font-size:11px;color:#8e8e93;}
-/* ── 小程序首页 ── */
-.mp-nav{background:#fff;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f2f2f7;}
-.mp-nav-title{font-size:15px;font-weight:600;color:#1c1c1e;}
-.mp-nav-icons{display:flex;gap:8px;align-items:center;}
-.mp-tabbar{background:#fff;border-top:1px solid #e5e5ea;padding:6px 0 8px;display:flex;}
-.mp-tabbar-item{flex:1;text-align:center;}
-.mp-tabbar-item .icon{font-size:14px;}
-.mp-tabbar-item .label{font-size:10px;color:#8e8e93;margin-top:1px;}
-.mp-tabbar-item.active .label{color:#533afd;}
-/* ── Banner ── */
-.banner-new{margin:8px;border-radius:12px;background:linear-gradient(135deg,#1a3a6e 0%,#1677ff 60%,#36cfc9 100%);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;}
-.banner-tradein-warn{margin:8px;border-radius:12px;background:linear-gradient(135deg,#ff8c00,#ffa940);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;}
-.banner-tradein-danger{margin:8px;border-radius:12px;background:linear-gradient(135deg,#cf1322,#ff4d4f);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;}
-.banner-cta{background:#fff;border-radius:12px;padding:4px 10px;font-size:11px;font-weight:700;margin-top:5px;display:inline-block;}
-/* ── 弹窗 ── */
-.popup-ov{position:absolute;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;border-radius:26px;z-index:10;}
-.popup-box{background:#fff;border-radius:16px;width:210px;overflow:hidden;}
-.popup-header-blue{background:linear-gradient(180deg,#1a3a6e,#1677ff);padding:16px 14px 12px;text-align:center;position:relative;}
-.popup-header-orange{background:linear-gradient(180deg,#ff8c00,#ffa940);padding:16px 14px 12px;text-align:center;position:relative;}
-.popup-header-red{background:linear-gradient(180deg,#cf1322,#ff4d4f);padding:16px 14px 12px;text-align:center;position:relative;}
-.popup-close{position:absolute;top:6px;right:8px;width:24px;height:24px;background:rgba(0,0,0,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;cursor:pointer;}
-.popup-price-row{display:flex;align-items:center;justify-content:center;gap:8px;margin:8px 0 6px;}
-.popup-cta{width:100%;background:linear-gradient(90deg,#ff8c00,#ffa940);color:#fff;border:none;border-radius:14px;padding:9px 0;font-size:13px;font-weight:700;cursor:pointer;margin-top:8px;}
-.popup-cta-blue{width:100%;background:#533afd;color:#fff;border:none;border-radius:14px;padding:9px 0;font-size:13px;font-weight:700;cursor:pointer;margin-top:8px;}
-</style>
-
-<div class="ot-wrap">
-<style>
-.ot-preview-box{background:#f8fafc;border:1.5px dashed #c7d2fe;border-radius:12px;padding:14px;margin:-4px 0 28px;}
-.ot-preview-title{font-size:11px;font-weight:700;color:#64748d;margin-bottom:12px;letter-spacing:.3px;}
+.ot-wrap{max-width:1280px;margin:0 auto;padding:28px 24px 60px;}
+.ot-h1{font-size:16px;font-weight:800;color:#1677ff;margin:28px 0 12px;padding-left:14px;border-left:4px solid #1677ff;}
+.ot-preview-box{background:#f8fafc;border:1px solid #e3e8ee;border-radius:10px;padding:14px 16px;margin-bottom:20px;}
+.ot-preview-title{font-size:12px;font-weight:800;color:#0d253d;margin-bottom:12px;}
 .ot-preview-grid{display:flex;flex-wrap:wrap;gap:12px;}
-.ot-preview-item{flex:1;min-width:145px;max-width:210px;}
-.ot-preview-tag{font-size:9.5px;font-weight:700;color:#94a3b8;letter-spacing:.3px;margin-bottom:5px;}
-.ot-sms{background:#f0f0f0;border-radius:12px;padding:9px 11px;font-size:10.5px;color:#333;line-height:1.7;}
-.ot-wx-card{border:1px solid #e3e8ee;border-radius:10px;overflow:hidden;}
-.ot-wx-header{background:#07c160;color:#fff;padding:4px 9px;font-size:9.5px;font-weight:600;}
-.ot-wx-body{padding:8px 10px;font-size:10.5px;line-height:1.7;color:#0d253d;background:#fff;}
-.ot-banner-indigo{background:linear-gradient(135deg,#533afd,#7c5cfc);border-radius:10px;padding:10px 12px;color:#fff;}
-.ot-banner-orange{background:linear-gradient(135deg,#fa8c16,#f5a623);border-radius:10px;padding:10px 12px;color:#fff;}
-.ot-banner-purple{background:linear-gradient(135deg,#531dab,#722ed1);border-radius:10px;padding:10px 12px;color:#fff;}
-.ot-popup{border:1px solid #e3e8ee;border-radius:12px;padding:12px 10px;background:#fff;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);}
-.ot-ticker{background:#fff7e6;border:1px solid #ffe7ba;border-radius:6px;padding:6px 10px;display:flex;align-items:center;gap:5px;}
-.ot-search-ad{border:1px solid #e0e0e0;border-radius:8px;padding:10px 12px;background:#fff;}
-.ot-btn-white{display:inline-block;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.5);color:#fff;border-radius:20px;padding:3px 10px;font-size:9.5px;margin-top:8px;}
-.ot-btn-primary{display:inline-block;background:#533afd;color:#fff;border-radius:20px;padding:5px 14px;font-size:10.5px;font-weight:600;}
-.ot-btn-orange{display:inline-block;background:#fa8c16;color:#fff;border-radius:20px;padding:5px 14px;font-size:10.5px;font-weight:600;}
+.ot-preview-item{flex:1;min-width:160px;}
+.ot-preview-tag{font-size:10px;font-weight:700;color:#64748d;margin-bottom:6px;}
+.ot-banner-indigo{background:linear-gradient(135deg,#4f46e5,#6366f1);border-radius:10px;padding:12px;color:#fff;min-height:88px;position:relative;}
+.ot-btn-white{display:inline-block;background:#fff;color:#4f46e5;border-radius:16px;padding:4px 12px;font-size:10px;font-weight:700;margin-top:8px;}
+.ot-btn-primary{background:#533afd;color:#fff;border-radius:16px;padding:6px 12px;font-size:11px;font-weight:700;text-align:center;}
+.ot-btn-orange{background:#fa8c16;color:#fff;border-radius:16px;padding:6px 12px;font-size:11px;font-weight:700;text-align:center;}
+.ot-popup{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 4px 16px rgba(0,0,0,.08);}
+.ot-sms{background:#f1f5f9;border-radius:8px;padding:10px;font-size:10px;line-height:1.6;color:#334155;}
+.ot-wx-card{border:1px solid #e3e8ee;border-radius:8px;overflow:hidden;font-size:10px;}
+.ot-wx-header{background:#f7f7f7;padding:6px 10px;font-weight:700;color:#576b95;}
+.ot-wx-body{padding:10px;line-height:1.6;color:#333;}
+.ot-ticker{display:flex;align-items:center;gap:6px;background:#fff7e6;border:1px solid #ffd591;border-radius:8px;padding:8px 10px;}
+.ot-search-ad{background:#fff;border:1px solid #e3e8ee;border-radius:8px;padding:10px;}
 </style>
+<div class="ot-wrap">
+  <div style="font-size:20px;font-weight:900;color:#1c1c1e;margin-bottom:6px;">🎯 运营触达图示</div>
+  <div style="font-size:12px;color:#666;line-height:1.8;margin-bottom:20px;background:#f0f5ff;border-radius:8px;padding:12px 16px;">按用户生命周期阶段梳理站内外触达渠道、触发时机与文案方向；下方为各阶段触达内容示意。</div>
 
-<!-- ════════════ 运营触达 · 全生命周期时间线 ════════════ -->
-<div class="ot-h1" style="border-color:#533afd;margin-top:32px;">📅 运营触达 · 全生命周期时间线</div>
-<div style="font-size:12px;color:#64748d;margin-bottom:20px;line-height:1.8;background:#f6f9fc;border-radius:8px;padding:12px 16px;border:1px solid #e3e8ee;">
-  以下按用户设备生命周期阶段，逐一列出触达场景、触发时机、渠道与频率，并在每个阶段下给出具体的触达内容示意。
-</div>
+  <!-- ── 阶段1 ── -->
+  <div style="border-left:4px solid #1677ff;padding-left:14px;margin-bottom:6px;">
+    <div style="font-size:14px;font-weight:800;color:#1677ff;">阶段 1 · 用户未购买设备</div>
+    <div style="font-size:11px;color:#64748d;margin-top:2px;">变现目标：新购 ETC &nbsp;·&nbsp; 核心指标：订单支付率 / 新购转化率</div>
+  </div>
+  <div class="bs-note" style="margin-bottom:12px;">触达规格表见需求说明「用户生命周期 × 运营策略」；此处展示触达内容示意。</div>
 
-<!-- ── 阶段1 ── -->
-<div style="border-left:4px solid #533afd;padding-left:14px;margin-bottom:6px;">
-  <div style="font-size:14px;font-weight:800;color:#533afd;">阶段 1 · 用户未购买设备</div>
-  <div style="font-size:11px;color:#64748d;margin-top:2px;">变现目标：新购 &nbsp;·&nbsp; 核心指标：订单支付率</div>
-</div>
-<table class="ot-spec-tbl" style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:16px;">
-  <thead><tr style="background:#eef2ff;">
-    <th style="padding:8px 12px;text-align:left;font-weight:700;color:#3730a3;border-bottom:2px solid #c7d2fe;width:120px;">触达场景</th>
-    <th style="padding:8px 12px;text-align:left;font-weight:700;color:#3730a3;border-bottom:2px solid #c7d2fe;">渠道</th>
-    <th style="padding:8px 12px;text-align:left;font-weight:700;color:#3730a3;border-bottom:2px solid #c7d2fe;">触发时机</th>
-    <th style="padding:8px 12px;text-align:left;font-weight:700;color:#3730a3;border-bottom:2px solid #c7d2fe;">频率</th>
-    <th style="padding:8px 12px;text-align:left;font-weight:700;color:#3730a3;border-bottom:2px solid #c7d2fe;">核心文案方向</th>
-  </tr></thead>
-  <tbody>
-    <tr style="border-bottom:1px solid #f0f4f8;">
-      <td style="padding:8px 12px;font-weight:600;">微信搜一搜广告</td>
-      <td style="padding:8px 12px;color:#64748d;">站外 · 广告</td>
-      <td style="padding:8px 12px;color:#64748d;">用户搜索 ETC / etc办理 等关键词时</td>
-      <td style="padding:8px 12px;color:#64748d;">竞价持续投放</td>
-      <td style="padding:8px 12px;">「ETC办理」→ 当天发货 · 高速95折 · 正品质保</td>
-    </tr>
-    <tr style="border-bottom:1px solid #f0f4f8;background:#fafbff;">
-      <td style="padding:8px 12px;font-weight:600;">小程序内 Banner</td>
-      <td style="padding:8px 12px;color:#64748d;">站内</td>
-      <td style="padding:8px 12px;color:#64748d;">用户进入小程序首页，判断无有效 ETC 设备</td>
-      <td style="padding:8px 12px;color:#64748d;">每次进入均展示，用户下单后自动撤销（扫码进入不触发）</td>
-      <td style="padding:8px 12px;">「立即办理 ETC，当天发货」</td>
-    </tr>
-    <tr style="border-bottom:1px solid #f0f4f8;">
-      <td style="padding:8px 12px;font-weight:600;">小程序内弹窗</td>
-      <td style="padding:8px 12px;color:#64748d;">站内</td>
-      <td style="padding:8px 12px;color:#64748d;">用户进入小程序首页，判断无有效 ETC 设备</td>
-      <td style="padding:8px 12px;color:#64748d;">每次 1 次；用户下单后不再触发（扫码进入不触发）</td>
-      <td style="padding:8px 12px;">「办 ETC 享高速95折 · 免费上门安装」</td>
-    </tr>
-  </tbody>
-</table>
 <div class="ot-preview-box">
   <div class="ot-preview-title">📋 触达内容示意</div>
   <div class="ot-preview-grid">
@@ -5971,7 +6653,7 @@ function confirmCancel() {
 
 <!-- ── 阶段4 ── -->
 <div style="border-left:4px solid #fa8c16;padding-left:14px;margin-bottom:6px;">
-  <div style="font-size:14px;font-weight:800;color:#d46b08;">阶段 4 · 设备临近过期（24 — 33 个月）</div>
+  <div style="font-size:14px;font-weight:800;color:#d46b08;">阶段 4 · 设备临近过期（31 — 33 个月）</div>
   <div style="font-size:11px;color:#64748d;margin-top:2px;">变现目标：延保 &nbsp;·&nbsp; 核心指标：延保订单支付率 / 延保渗透率</div>
 </div>
 <table class="ot-spec-tbl" style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:16px;">
@@ -6597,5 +7279,497 @@ function confirmCancel() {
 
 </div>
 
+<!-- ══ 商品配置详情 Modal ══ -->
+<div id="product-modal-overlay" onclick="closeProductModal()" style="display:none;position:fixed;inset:0;background:rgba(13,37,61,.45);z-index:9000;"></div>
+<div id="product-modal" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:min(760px,95vw);max-height:90vh;overflow-y:auto;background:#fff;border-radius:16px;box-shadow:0 8px 40px rgba(13,37,61,.18);z-index:9001;padding:28px 28px 24px;">
+  <!-- 顶部 -->
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid #f0f4f8;">
+    <div>
+      <div style="font-size:16px;font-weight:800;color:#0d253d;">📦 商品配置</div>
+      <div id="pm-subtitle" style="font-size:12px;color:#64748d;margin-top:3px;">互动4.0屏显款</div>
+    </div>
+    <button onclick="closeProductModal()" style="background:none;border:none;cursor:pointer;font-size:18px;color:#94a3b8;padding:4px;">×</button>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+
+    <!-- 左：基础信息 -->
+    <div>
+      <div style="font-size:12px;font-weight:700;color:#0d253d;margin-bottom:12px;">基础信息</div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:12px;">
+        <!-- 业务类型 -->
+        <div style="display:flex;gap:10px;align-items:center;">
+          <label style="width:72px;color:#64748d;flex-shrink:0;">业务类型</label>
+          <div style="display:flex;gap:0;border:1px solid #e3e8ee;border-radius:6px;overflow:hidden;" id="pm-biz-toggle">
+            <button id="pm-biz-np" onclick="setPmBizType('new-purchase')"
+              style="padding:5px 14px;font-size:12px;font-weight:600;border:none;cursor:pointer;background:#533afd;color:#fff;">新购</button>
+            <button id="pm-biz-ti" onclick="setPmBizType('trade-in')"
+              style="padding:5px 14px;font-size:12px;font-weight:600;border:none;cursor:pointer;background:#fff;color:#64748d;border-left:1px solid #e3e8ee;">以旧换新</button>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <label style="width:72px;color:#64748d;flex-shrink:0;">商品名称</label>
+          <input type="text" id="pm-name" value="互动4.0屏显款" style="flex:1;border:1px solid #e3e8ee;border-radius:6px;padding:6px 8px;font-size:12px;"/>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <label style="width:72px;color:#64748d;flex-shrink:0;">设备型号</label>
+          <input type="text" value="OBU·屏显款" style="flex:1;border:1px solid #e3e8ee;border-radius:6px;padding:6px 8px;font-size:12px;"/>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <label id="pm-price-label" style="width:72px;color:#64748d;flex-shrink:0;">售价（元）</label>
+          <input type="number" id="pm-price" value="168" style="flex:1;border:1px solid #e3e8ee;border-radius:6px;padding:6px 8px;font-size:12px;"/>
+        </div>
+        <!-- 以旧换新专属：支持抵扣 -->
+        <div id="pm-discount-row" style="display:flex;gap:10px;align-items:center;">
+          <label style="width:72px;color:#64748d;flex-shrink:0;">旧机抵扣</label>
+          <div style="display:flex;gap:12px;">
+            <label style="display:flex;align-items:center;gap:4px;"><input type="radio" name="pm-discount" value="1" checked onchange="updatePmDisplayFieldsState()"/> 支持</label>
+            <label style="display:flex;align-items:center;gap:4px;"><input type="radio" name="pm-discount" value="0" onchange="updatePmDisplayFieldsState()"/> 不支持</label>
+          </div>
+          <span style="font-size:11px;color:#94a3b8;">金额在「旧设备折扣」配置</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <label style="width:72px;color:#64748d;flex-shrink:0;">商品状态</label>
+          <select id="pm-status" onchange="updatePmDisplayFieldsState()" style="flex:1;border:1px solid #e3e8ee;border-radius:6px;padding:6px 8px;font-size:12px;">
+            <option selected>上架</option><option>下架</option>
+          </select>
+        </div>
+
+        <!-- C端展示设置 -->
+        <div id="pm-display-section" style="border:1px solid #c7d2fe;border-radius:8px;padding:12px;background:#fafbff;margin-top:4px;">
+          <div style="font-size:12px;font-weight:700;color:#0d253d;margin-bottom:10px;">C端展示设置</div>
+          <div id="pm-display-disabled-hint" style="display:none;font-size:11px;color:#d46b08;background:#fff7e6;border-radius:6px;padding:6px 8px;margin-bottom:8px;line-height:1.5;">已下架或不支持抵扣的商品不参与 C 端排序，无法设为默认</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;gap:10px;align-items:center;">
+              <label style="width:72px;color:#64748d;flex-shrink:0;">展示顺序</label>
+              <div style="display:flex;align-items:center;gap:6px;flex:1;flex-wrap:wrap;">
+                <span style="font-size:11px;color:#64748d;">第</span>
+                <input type="number" id="pm-sort-order" min="1" value="1" style="width:68px;border:1.5px solid #533afd;border-radius:6px;padding:6px 8px;font-size:13px;font-weight:700;text-align:center;color:#533afd;"/>
+                <span style="font-size:11px;color:#64748d;">位</span>
+                <span id="pm-sort-hint" style="font-size:10px;color:#94a3b8;">序号越小，C 端越靠前</span>
+              </div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <label style="width:72px;color:#64748d;flex-shrink:0;padding-top:2px;">默认商品</label>
+              <div>
+                <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+                  <input type="checkbox" id="pm-is-default"/>
+                  <span style="font-size:12px;font-weight:600;color:#0d253d;">设为 C 端默认选中商品</span>
+                </label>
+                <div style="font-size:10px;color:#94a3b8;margin-top:4px;line-height:1.5;">同一业务线仅 1 个默认；保存后将自动取消原默认商品</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右：权益配置 -->
+    <div>
+      <div style="font-size:12px;font-weight:700;color:#0d253d;margin-bottom:12px;">权益配置 <span style="font-size:10px;font-weight:400;color:#94a3b8;">（激活成功后自动发放）</span></div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:12px;">
+
+        <!-- 质保 -->
+        <div style="border:1px solid #ffe7ba;border-radius:8px;padding:10px 12px;background:#fffef8;">
+          <div style="font-weight:700;color:#d46b08;margin-bottom:8px;">🛡️ 质保</div>
+          <div style="display:flex;gap:10px;align-items:center;padding-left:4px;">
+            <label style="color:#64748d;width:56px;flex-shrink:0;">质保时长</label>
+            <select style="border:1px solid #e3e8ee;border-radius:6px;padding:4px 8px;font-size:11px;">
+              <option>1年</option><option>2年</option><option selected>3年</option>
+            </select>
+            <span style="font-size:10px;color:#94a3b8;">随商品赠送，不可关闭</span>
+          </div>
+        </div>
+
+
+
+        <!-- 洗车优惠券 -->
+        <div style="border:1px solid #b7eb8f;border-radius:8px;padding:10px 12px;background:#f6ffed;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <label style="display:flex;align-items:center;gap:6px;font-weight:700;color:#389e0d;cursor:pointer;">
+              <input type="checkbox" checked/> 🚿 洗车优惠券
+            </label>
+            <span style="font-size:10px;color:#94a3b8;">激活后按月发放</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;padding-left:4px;">
+            <div style="display:flex;gap:10px;align-items:center;">
+              <label style="color:#64748d;width:56px;flex-shrink:0;">券面额</label>
+              <div style="display:flex;align-items:center;gap:4px;">
+                <span style="color:#64748d;">¥</span>
+                <input type="number" value="5" style="border:1px solid #e3e8ee;border-radius:6px;padding:4px 8px;font-size:11px;width:60px;"/>
+              </div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <label style="color:#64748d;width:56px;flex-shrink:0;">发放张数</label>
+              <input type="number" value="12" style="border:1px solid #e3e8ee;border-radius:6px;padding:4px 8px;font-size:11px;width:60px;"/>
+              <span style="color:#64748d;font-size:11px;">张（每月1张）</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <label style="color:#64748d;width:56px;flex-shrink:0;">有效期</label>
+              <input type="number" value="30" style="border:1px solid #e3e8ee;border-radius:6px;padding:4px 8px;font-size:11px;width:60px;"/>
+              <span style="color:#64748d;font-size:11px;">天（发放后）</span>
+            </div>
+          </div>
+        </div>
+
+
+
+        <!-- 高速折扣 -->
+        <div style="border:1px solid #c7d2fe;border-radius:8px;padding:10px 12px;background:#eef2ff;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <label style="display:flex;align-items:center;gap:6px;font-weight:700;color:#3730a3;cursor:pointer;">
+              <input type="checkbox" checked id="pm-gaosu-show"/> 🏷️ 高速折扣
+            </label>
+            <span style="font-size:10px;color:#94a3b8;">控制是否在C端展示</span>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;padding-left:4px;">
+            <label style="color:#64748d;width:56px;flex-shrink:0;padding-top:6px;">展示文案</label>
+            <div style="flex:1;">
+              <input type="text" value="高速95折" id="pm-gaosu-text" style="width:100%;border:1px solid #c7d2fe;border-radius:6px;padding:5px 8px;font-size:12px;color:#1e1b4b;background:#fff;"/>
+              <div style="font-size:10px;color:#94a3b8;margin-top:4px;">用于首页标签及购买页权益展示</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部按钮 -->
+  <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:24px;padding-top:16px;border-top:1px solid #f0f4f8;">
+    <button class="btn btn-ghost btn-sm" onclick="closeProductModal()">取消</button>
+    <button class="btn btn-primary btn-sm" onclick="saveProductModal()">保存配置</button>
+  </div>
+</div>
+
+<script>
+var currentProductTab = 'new-purchase';
+var pmEditingProdId = null;
+function getTableIdForTab(tab) {
+  return (tab || currentProductTab) === 'new-purchase' ? 'prod-tbl-new-purchase' : 'prod-tbl-trade-in';
+}
+function getTypeKeyForTab(tab) {
+  return (tab || currentProductTab) === 'new-purchase' ? 'np' : 'ti';
+}
+function getProductRowById(prodId, tableId) {
+  var table = document.getElementById(tableId || getTableIdForTab());
+  return table ? table.querySelector('tr[data-prod-id="' + prodId + '"]') : null;
+}
+function updatePmDisplayFieldsState() {
+  var statusSel = document.getElementById('pm-status');
+  var sortInput = document.getElementById('pm-sort-order');
+  var defaultCb = document.getElementById('pm-is-default');
+  var hint = document.getElementById('pm-display-disabled-hint');
+  var isNp = (currentProductTab || 'new-purchase') === 'new-purchase';
+  var onShelf = statusSel && statusSel.value === '上架';
+  var discEl = document.querySelector('input[name="pm-discount"]:checked');
+  var discountOk = isNp || (discEl && discEl.value === '1');
+  var canDisplay = onShelf && discountOk;
+  if (sortInput) { sortInput.disabled = !canDisplay; sortInput.style.opacity = canDisplay ? '1' : '0.45'; }
+  if (defaultCb) {
+    defaultCb.disabled = !canDisplay;
+    if (!canDisplay) defaultCb.checked = false;
+  }
+  if (hint) hint.style.display = canDisplay ? 'none' : 'block';
+}
+function setDefaultProductOnRow(row, typeKey) {
+  if (!row) return;
+  var tableId = typeKey === 'np' ? 'prod-tbl-new-purchase' : 'prod-tbl-trade-in';
+  var table = document.getElementById(tableId);
+  if (!table) return;
+  table.querySelectorAll('.prod-default-display').forEach(function(cell) {
+    cell.innerHTML = '<span style="color:#94a3b8;font-size:11px;">—</span>';
+  });
+  var defCell = row.querySelector('.prod-default-display');
+  if (defCell) defCell.innerHTML = '<span class="admin-badge prod-default-badge is-default-badge" style="background:#f0fdf4;color:#15803d;">★ 默认</span>';
+  updateDefaultSummary(typeKey);
+}
+function clearDefaultOnRow(row, typeKey) {
+  var defCell = row && row.querySelector('.prod-default-display');
+  if (defCell) defCell.innerHTML = '<span style="color:#94a3b8;font-size:11px;">—</span>';
+  updateDefaultSummary(typeKey);
+}
+function applyProductDisplayFromModal(row, tableId) {
+  if (!row || !tableId) return;
+  var typeKey = tableId === 'prod-tbl-new-purchase' ? 'np' : 'ti';
+  var table = document.getElementById(tableId);
+  var statusSel = document.getElementById('pm-status');
+  var sortInput = document.getElementById('pm-sort-order');
+  var defaultCb = document.getElementById('pm-is-default');
+  var discEl = document.querySelector('input[name="pm-discount"]:checked');
+  var onShelf = statusSel && statusSel.value === '上架';
+  row.setAttribute('data-on-shelf', onShelf ? '1' : '0');
+  if (tableId === 'prod-tbl-trade-in' && discEl) row.setAttribute('data-discount', discEl.value);
+  normalizeProductOrder(table);
+  if (isProductRowSortable(row) && sortInput && !sortInput.disabled) {
+    var target = parseInt(sortInput.value, 10);
+    if (!isNaN(target) && target > 0) {
+      var others = getSortableProductRows(table).filter(function(r) { return r !== row; });
+      var idx = Math.min(Math.max(target - 1, 0), others.length);
+      if (idx >= others.length) table.appendChild(row);
+      else table.insertBefore(row, others[idx]);
+    }
+  } else {
+    normalizeProductOrder(table);
+  }
+  refreshProductSort(tableId);
+  if (defaultCb && defaultCb.checked && !defaultCb.disabled) setDefaultProductOnRow(row, typeKey);
+  else if (row.querySelector('.is-default-badge')) clearDefaultOnRow(row, typeKey);
+}
+
+function renderBannerPreview() {
+  var scene = (document.getElementById('bs-scene') || {}).value || 'buy';
+  var main = (document.getElementById('bs-main') || {}).value || 'ship';
+  var sub = (document.getElementById('bs-sub') || {}).value || 'doc_pending';
+  var mainWrap = document.getElementById('bs-main-wrap');
+  var subWrap = document.getElementById('bs-sub-wrap');
+  var host = document.getElementById('bs-preview-host');
+  var meta = document.getElementById('bs-preview-meta');
+  if (!host) return;
+
+  var FIXED_TITLE = '您有一笔订单进行中';
+  var progressMap = {
+    doc_pending: {
+      ship: '可提前提交资料，审核通过后即可签约',
+      transit: '请尽快提交资料，以免影响激活',
+      received: '请提交资料，审核通过后可签约激活',
+      own: '请提交车辆资料，审核通过后可签约'
+    },
+    doc_review: {
+      ship: '资料审核中，预计 1 个工作日内完成',
+      transit: '资料审核中，预计 1 个工作日内完成',
+      received: '资料审核中，预计 1 个工作日内完成',
+      own: '资料审核中，预计 1 个工作日内完成'
+    },
+    doc_reject: {
+      ship: '资料审核未通过，请修改后重新提交',
+      transit: '资料审核未通过，请修改后重新提交',
+      received: '资料审核未通过，请修改后重新提交',
+      own: '资料审核未通过，请修改后重新提交'
+    },
+    sign_pending: {
+      ship: '车辆未签约',
+      transit: '车辆未签约',
+      received: '车辆未签约',
+      own: '车辆未签约'
+    },
+    process_done: {
+      ship: '资料签约已完成，等待仓库发出',
+      transit: '设备已发出，签收后请完成激活',
+      received: '签约已完成，激活后即可通行',
+      own: '签约已完成，请激活设备后即可通行'
+    }
+  };
+  var btnMap = {
+    doc_pending: '提交资料',
+    doc_review: '查看资料',
+    doc_reject: '重新提交',
+    sign_pending: '去签约',
+    process_done: { ship: '', transit: '查看资料', received: '去激活', own: '去激活' }
+  };
+
+  if (scene === 'own') {
+    if (mainWrap) mainWrap.style.display = 'none';
+    if (subWrap) subWrap.style.display = '';
+    var ownSub = sub === 'process_done' ? 'process_done' : sub;
+    var ownKey = ownSub === 'process_done' ? 'own' : 'own';
+    var ownProgress = (progressMap[ownSub] && progressMap[ownSub].own) || progressMap.doc_review.own;
+    var ownBtn = ownSub === 'process_done' ? btnMap.process_done.own : btnMap[ownSub];
+    var ownCfg = { title: FIXED_TITLE, sub: ownProgress, btn: ownBtn, logistics: '', showOrder: true, isPay: false };
+    host.innerHTML = buildBannerHtml(ownCfg);
+    if (meta) meta.innerHTML = '<b>① 主标题</b> ' + FIXED_TITLE + ' &nbsp;|&nbsp; <b>② 办理进度</b> ' + ownProgress + ' &nbsp;|&nbsp; <b>③ 物流</b> 无 &nbsp;|&nbsp; <b>④ 主按钮</b> ' + (ownBtn || '无') + ' &nbsp;|&nbsp; <b>⑤</b> 查看订单';
+    return;
+  }
+
+  if (mainWrap) mainWrap.style.display = '';
+  if (subWrap) subWrap.style.display = '';
+  if (main === 'pay') {
+    if (subWrap) subWrap.style.display = 'none';
+    host.innerHTML = buildBannerHtml({ title: '你有一笔订单待付款', sub: '限时 30 分钟内完成支付', btn: '去支付', logistics: '', showOrder: false, isPay: true });
+    if (meta) meta.innerHTML = '<b>待付款逻辑不变</b> · 主标题 + 支付时限 + 去支付 · 无物流 · 无查看订单';
+    return;
+  }
+
+  var logisticsMap = {
+    ship: (sub === 'sign_pending' || sub === 'process_done') ? '待发货' : '待出库',
+    transit: '运输中',
+    received: '已签收'
+  };
+  var progress = (progressMap[sub] && progressMap[sub][main]) || '';
+  var btn = sub === 'process_done' ? (btnMap.process_done[main] || '') : (btnMap[sub] || '');
+  var cfg = { title: FIXED_TITLE, sub: progress, btn: btn, logistics: logisticsMap[main] || '', showOrder: true, isPay: false };
+  host.innerHTML = buildBannerHtml(cfg);
+  if (meta) meta.innerHTML = '<b>① 主标题</b> ' + FIXED_TITLE + ' &nbsp;|&nbsp; <b>② 办理进度</b> ' + progress + ' &nbsp;|&nbsp; <b>③ 物流</b> ' + cfg.logistics + ' &nbsp;|&nbsp; <b>④ 主按钮</b> ' + (btn || '无') + ' &nbsp;|&nbsp; <b>⑤</b> 查看订单';
+}
+function buildBannerHtml(cfg) {
+  var cls = 'bs-banner-preview' + (cfg.isPay ? ' bs-pay' : '');
+  var logisticsHtml = cfg.logistics ? '<div class="logistics-text">' + cfg.logistics + '</div>' : '';
+  var btnHtml = cfg.btn ? '<div class="btn-action">' + cfg.btn + '</div>' : '';
+  var orderHtml = cfg.showOrder !== false ? '<div class="view-order">查看订单</div>' : '';
+  return '<div class="' + cls + '" style="max-width:520px;"><div class="bp-left"><div class="title">' + cfg.title + '</div><div class="sub">' + cfg.sub + '</div>' + logisticsHtml + '</div><div class="bp-right">' + btnHtml + orderHtml + '</div></div>';
+}
+
+function previewAdminImg(input, key) {
+  var file = input.files && input.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) { applyAdminImgUrl(e.target.result, key); };
+  reader.readAsDataURL(file);
+}
+function applyAdminImgUrl(url, key) {
+  var preview = document.getElementById('img-preview-' + key);
+  var placeholder = document.getElementById('img-placeholder-' + key);
+  if (!preview) return;
+  if (url && url.trim()) {
+    preview.src = url.trim();
+    preview.style.display = 'block';
+    if (placeholder) placeholder.style.display = 'none';
+  } else {
+    preview.src = '';
+    preview.style.display = 'none';
+    if (placeholder) placeholder.style.display = '';
+  }
+}
+function saveAdminImgs() {
+  var npUrl = (document.getElementById('img-url-np') || {}).value || '';
+  var tiUrl = (document.getElementById('img-url-ti') || {}).value || '';
+  // 同步到前台原型
+  var npImg = document.querySelector('#page-home img.hero-img, #page-home .hero-img');
+  var tiImg = document.querySelector('#page-tradein-home img.hero-img, #page-tradein-home .hero-img');
+  if (npImg && npUrl) npImg.src = npUrl;
+  if (tiImg && tiUrl) tiImg.src = tiUrl;
+  alert('图片配置已保存（原型同步预览）');
+}
+function switchProductTab(tab) {
+  currentProductTab = tab;
+  var isNp = tab === 'new-purchase';
+  // tab 样式
+  var tabNp = document.getElementById('prod-tab-new');
+  var tabTi = document.getElementById('prod-tab-tradein');
+  if (tabNp) { tabNp.style.color = isNp ? '#533afd' : '#94a3b8'; tabNp.style.borderBottomColor = isNp ? '#533afd' : 'transparent'; }
+  if (tabTi) { tabTi.style.color = isNp ? '#94a3b8' : '#533afd'; tabTi.style.borderBottomColor = isNp ? 'transparent' : '#533afd'; }
+  // 列表显示
+  var listNp = document.getElementById('prod-list-new-purchase');
+  var listTi = document.getElementById('prod-list-trade-in');
+  if (listNp) listNp.style.display = isNp ? '' : 'none';
+  if (listTi) listTi.style.display = isNp ? 'none' : '';
+  // 图片配置区跟随切换
+  var imgNp = document.getElementById('img-section-np');
+  var imgTi = document.getElementById('img-section-ti');
+  if (imgNp) imgNp.style.display = isNp ? 'flex' : 'none';
+  if (imgTi) imgTi.style.display = isNp ? 'none' : 'flex';
+  refreshProductSort(isNp ? 'prod-tbl-new-purchase' : 'prod-tbl-trade-in');
+}
+function setPmBizType(type) {
+  var isNp = type === 'new-purchase';
+  var btnNp = document.getElementById('pm-biz-np');
+  var btnTi = document.getElementById('pm-biz-ti');
+  if (btnNp) { btnNp.style.background = isNp ? '#533afd' : '#fff'; btnNp.style.color = isNp ? '#fff' : '#64748d'; }
+  if (btnTi) { btnTi.style.background = isNp ? '#fff' : '#533afd'; btnTi.style.color = isNp ? '#64748d' : '#fff'; }
+  // 新购不需要旧机抵扣；标签改"售价"或"换新价"
+  var discRow = document.getElementById('pm-discount-row');
+  var priceLabel = document.getElementById('pm-price-label');
+  if (discRow) discRow.style.display = isNp ? 'none' : 'flex';
+  if (priceLabel) priceLabel.textContent = isNp ? '售价（元）' : '换新价（元）';
+  updatePmDisplayFieldsState();
+}
+function getProductTableRows(table) {
+  if (!table) return [];
+  return Array.prototype.filter.call(table.querySelectorAll('tr'), function(r) { return r.rowIndex > 0; });
+}
+function isProductRowSortable(row) {
+  if (!row || row.getAttribute('data-on-shelf') !== '1') return false;
+  if (row.getAttribute('data-discount') === '0') return false;
+  return true;
+}
+function getSortableProductRows(table) {
+  return getProductTableRows(table).filter(isProductRowSortable);
+}
+function normalizeProductOrder(table) {
+  var sortable = getSortableProductRows(table);
+  var rest = getProductTableRows(table).filter(function(r) { return !isProductRowSortable(r); });
+  sortable.concat(rest).forEach(function(r) { table.appendChild(r); });
+}
+function refreshProductSort(tableId) {
+  var table = document.getElementById(tableId);
+  if (!table) return;
+  normalizeProductOrder(table);
+  var sortable = getSortableProductRows(table);
+  sortable.forEach(function(row, i) {
+    var sortCell = row.querySelector('.prod-sort-display');
+    if (sortCell) sortCell.innerHTML = '<span class="admin-badge prod-sort-badge" style="background:#eef2ff;color:#533afd;">第 ' + (i + 1) + ' 位</span>';
+  });
+  getProductTableRows(table).filter(function(r) { return !isProductRowSortable(r); }).forEach(function(row) {
+    var sortCell = row.querySelector('.prod-sort-display');
+    if (sortCell) sortCell.innerHTML = '<span style="color:#94a3b8;font-size:11px;">—</span>';
+  });
+}
+function updateDefaultSummary(type) {
+  var tableId = type === 'np' ? 'prod-tbl-new-purchase' : 'prod-tbl-trade-in';
+  var table = document.getElementById(tableId);
+  var nameEl = document.getElementById(type + '-default-name');
+  var idEl = document.getElementById(type + '-default-id');
+  if (!table || !nameEl) return;
+  var activeRow = table.querySelector('.prod-default-display .is-default-badge');
+  if (!activeRow) return;
+  var row = activeRow.closest('tr');
+  if (!row) return;
+  var nameNode = row.querySelector('b');
+  nameEl.textContent = nameNode ? nameNode.textContent : '—';
+  if (idEl) idEl.textContent = (row.getAttribute('data-prod-id') || '—').trim();
+}
+function saveProductModal() {
+  var nm = document.getElementById('pm-name');
+  if (nm && !nm.value.trim()) { nm.style.borderColor='#ff4d4f'; nm.focus(); return; }
+  if (nm) nm.style.borderColor = '';
+  var saveBtn = document.querySelector('#product-modal .btn-primary');
+  var isNew = saveBtn && saveBtn.textContent === '创建商品';
+  var tableId = getTableIdForTab();
+  var typeKey = getTypeKeyForTab();
+  var priceInput = document.getElementById('pm-price');
+  var priceVal = priceInput ? priceInput.value.trim() : '';
+  if (isNew) {
+    var table = document.getElementById(tableId);
+    if (table) {
+      var nameVal = nm.value.trim();
+      var rows = table.querySelectorAll('tr');
+      var skuPrefix = typeKey === 'np' ? 'NP' : 'TI';
+      var skuId = skuPrefix + '-' + String(100 + rows.length - 1).slice(-3);
+      var discEl = document.querySelector('input[name="pm-discount"]:checked');
+      var onShelf = document.getElementById('pm-status') && document.getElementById('pm-status').value === '上架';
+      var row = document.createElement('tr');
+      row.setAttribute('data-on-shelf', onShelf ? '1' : '0');
+      row.setAttribute('data-prod-id', skuId);
+      if (typeKey === 'ti' && discEl) row.setAttribute('data-discount', discEl.value);
+      else if (typeKey === 'ti') row.setAttribute('data-discount', '1');
+      row.innerHTML = '<td class="prod-sort-display" style="text-align:center;"><span style="color:#94a3b8;font-size:11px;">—</span></td>'
+        + '<td class="prod-default-display" style="text-align:center;"><span style="color:#94a3b8;font-size:11px;">—</span></td>'
+        + '<td style="color:#94a3b8;font-size:11px;">' + skuId + '</td>'
+        + '<td><b>' + nameVal + '</b></td>'
+        + '<td>' + (priceVal ? '¥' + priceVal : '—') + '</td>'
+        + (typeKey === 'np' ? '' : '<td><span class="admin-badge" style="background:#f0fdf4;color:#22c55e;">' + (discEl && discEl.value === '1' ? '支持' : '不支持') + '</span></td>')
+        + '<td><span class="admin-badge" style="background:' + (onShelf ? '#f0fdf4;color:#22c55e' : '#fff2f0;color:#ff4d4f') + ';">' + (onShelf ? '上架' : '已下架') + '</span></td>'
+        + '<td style="color:#64748d;font-size:11px;">—</td>'
+        + '<td><button class="btn btn-ghost btn-sm" onclick="showProductDetail(\'' + skuId + '\')">配置</button></td>';
+      table.appendChild(row);
+      applyProductDisplayFromModal(row, tableId);
+    }
+  } else if (pmEditingProdId) {
+    var row = getProductRowById(pmEditingProdId, tableId);
+    if (row) {
+      var nameNode = row.querySelector('b');
+      if (nameNode) nameNode.textContent = nm.value.trim();
+      var tds = row.querySelectorAll('td');
+      if (tds[4] && priceVal) tds[4].textContent = '¥' + priceVal;
+      applyProductDisplayFromModal(row, tableId);
+    }
+  }
+  closeProductModal();
+}
+function closeProductModal() {
+  document.getElementById('product-modal-overlay').style.display = 'none';
+  document.getElementById('product-modal').style.display = 'none';
+}
+</script>
 </body>
 </html>
